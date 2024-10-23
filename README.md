@@ -1,1 +1,1 @@
-## Gruopie Tracker Search Bar Project
+## Groupie Tracker Search Bar Project
