@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"path/filepath"
@@ -102,8 +103,8 @@ Parameters:
   - r: *http.Request containing the request details
 */
 func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/artists/" {
-		renderError(w, http.StatusNotFound, "The Page you're trying to acess is unavailable")
+	if r.URL.Path != "/artists" && r.URL.Path != "/artists/" {
+		renderError(w, http.StatusNotFound, "The Page you're trying to access is unavailable")
 		return
 	}
 
@@ -112,6 +113,24 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Fetch all artists
+	result, err := ReadArtists("https://groupietrackers.herokuapp.com/api/artists")
+	if err != nil {
+		renderError(w, http.StatusInternalServerError, "Error fetching artists")
+		return
+	}
+
+	// Check if it's a search request
+	query := r.URL.Query().Get("q")
+	if query != "" {
+		// Perform search
+		searchResults := searchArtists(result, query)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(searchResults)
+		return
+	}
+
+	// If not a search request, render the full artists page
 	templatePath := filepath.Join("template", "artists.html")
 	temp1, err := template.ParseFiles(templatePath)
 	if err != nil {
@@ -119,16 +138,21 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := ReadArtists("https://groupietrackers.herokuapp.com/api/artists")
-	if err != nil {
-		renderError(w, http.StatusInternalServerError, "Error fetching artists")
-		return
-	}
-
 	err = temp1.Execute(w, result)
 	if err != nil {
 		renderError(w, http.StatusInternalServerError, "Error executing template")
 	}
+}
+
+func searchArtists(artists []Artist, query string) []Artist {
+	var results []Artist
+	query = strings.ToLower(query)
+	for _, artist := range artists {
+		if strings.Contains(strings.ToLower(artist.Name), query) {
+			results = append(results, artist)
+		}
+	}
+	return results
 }
 
 type ArtistData struct {
