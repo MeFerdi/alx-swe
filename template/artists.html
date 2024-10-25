@@ -30,10 +30,42 @@
         .shortcut-item {
             margin-bottom: 8px;
         }
+        
+    #search-container {
+        position: relative;
+        margin-bottom: 20px;
+    }
+    #search-input {
+        width: 300px;
+        padding: 10px;
+        font-size: 16px;
+    }
+    #search-results {
+        position: absolute;
+        width: 300px;
+        background-color: white;
+        border: 1px solid #ddd;
+        max-height: 300px;
+        overflow-y: auto;
+        display: none;
+        z-index: 1000;
+    }
+    .search-result-item {
+        padding: 10px;
+        cursor: pointer;
+        color: black; /* Ensure text is visible */
+    }
+    .search-result-item:hover {
+        background-color: #f0f0f0;
+    }
     </style>
 </head>
 <body>
     <h1>Artists</h1>
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search for an artist...">
+        <div id="search-results"></div>
+    </div>
     <div class="artists-container">
         <div class="dropdown">
             <button>Shortcuts</button>
@@ -55,5 +87,79 @@
             <p>No artists found.</p>
         {{end}}
     </div>
+
+   <script>
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
+
+    console.log('Script loaded');
+
+    searchInput.addEventListener('input', function() {
+        const query = this.value.trim();
+        console.log('Search query:', query);
+
+        if (query.length > 0) {
+            const url = `/artists?q=${encodeURIComponent(query)}`;
+            console.log('Fetching from URL:', url);
+
+            fetch(url)
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Received data:', data);
+                    searchResults.innerHTML = '';
+                    if (Array.isArray(data) && data.length > 0) {
+                        data.forEach(artist => {
+                            console.log('Processing artist:', artist);
+                            const div = document.createElement('div');
+                            div.className = 'search-result-item';
+                            
+                            // Check for different possible name properties
+                            const artistName = artist.name || artist.Name || artist.name || 'Unknown Artist';
+                            div.textContent = artistName;
+                            
+                            div.addEventListener('click', () => {
+                                // Check for different possible ID properties
+                                const artistId = artist.id || artist.Id || artist.ID;
+                                console.log('Clicked artist:', artistName, 'ID:', artistId);
+                                
+                                if (artistId) {
+                                    window.location.href = `/artist/${artistId}`;
+                                } else {
+                                    console.error('Artist ID not found for', artistName);
+                                    alert('Sorry, unable to find details for this artist.');
+                                }
+                            });
+                            searchResults.appendChild(div);
+                        });
+                        searchResults.style.display = 'block';
+                    } else {
+                        console.log('No artists found or data is not an array');
+                        searchResults.innerHTML = '<div class="search-result-item">No artists found</div>';
+                        searchResults.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    searchResults.innerHTML = '<div class="search-result-item">Error fetching results</div>';
+                    searchResults.style.display = 'block';
+                });
+        } else {
+            console.log('Empty query, hiding results');
+            searchResults.style.display = 'none';
+        }
+    });
+
+    // Hide search results when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!searchResults.contains(event.target) && event.target !== searchInput) {
+            searchResults.style.display = 'none';
+        }
+    });
+
+    console.log('Event listeners added');
+</script>
 </body>
 </html>
