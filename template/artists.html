@@ -31,12 +31,16 @@
         .shortcut-item {
             margin-bottom: 8px;
         }
+
     </style>
 </head>
 <body>
     <div class="header">
         <h1>Artists</h1>
-        <input type="text" placeholder="Search..." class="search-bar">
+        <div class="search-container">
+            <input type="text" placeholder="Search by creation date or first album..." class="search-bar" id="search-bar">
+            <div id="suggestions" class="suggestions-list"></div>
+        </div>
     </div>
 
     <div class="artists-container">
@@ -65,5 +69,7 @@
             <p>No artists found.</p>
         {{end}}
     </div>
-</body>
-</html>
+    <script src="../script/script.js"></script>
+
+    </body>
+    </html>
