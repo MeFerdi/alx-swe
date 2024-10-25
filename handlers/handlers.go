@@ -1,9 +1,11 @@
 package api
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"text/template"
 )
@@ -41,6 +43,57 @@ Parameters:
   - status: HTTP status code for the error
   - message: Error message to display
 */
+type SearchResult struct {
+	Name string `json:"name"`
+	Type string `json:"type"`
+}
+
+// SearchHandler handles search requests for "first album" and "creation date".
+func SearchHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		renderError(w, http.StatusMethodNotAllowed, "Wrong method")
+		return
+	}
+
+	query := r.URL.Query().Get("query")
+	if query == "" {
+		renderError(w, http.StatusBadRequest, "Query parameter is missing")
+		return
+	}
+
+	lowerQuery := strings.ToLower(query)
+
+	// Fetch artist data
+	artists, err := ReadArtists("https://groupietrackers.herokuapp.com/api/artists")
+	if err != nil {
+		renderError(w, http.StatusInternalServerError, "Error fetching artist data")
+		return
+	}
+
+	var results []SearchResult
+
+	// Search within CreationDate and FirstAlbum
+	for _, artist := range artists {
+		// Check FirstAlbum as a string
+		if strings.Contains(strings.ToLower(artist.FirstAlbum), lowerQuery) {
+			results = append(results, SearchResult{
+				Name: artist.Name,
+				Type: "first album date",
+			})
+		}
+		// Check CreationDate by converting it to a string
+		if strings.Contains(strconv.Itoa(artist.CreationDate), lowerQuery) {
+			results = append(results, SearchResult{
+				Name: artist.Name,
+				Type: "creation date",
+			})
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(results)
+}
+
 func renderError(w http.ResponseWriter, status int, message string) {
 	Init()
 	w.WriteHeader(status)
