@@ -53,7 +53,29 @@ h1 {
 .search-bar:focus {
     box-shadow: 0 0 8px rgba(24, 206, 33, 0.6);
 }
+.suggestions-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #1a1a1a;
+    border: 1px solid #ccc;
+    border-radius: 0 0 8px 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    z-index: 10; /* Ensure it appears above other content */
+}
 
+.suggestion-item {
+    padding: 8px 10px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.suggestion-item:hover {
+    background-color: #333;
+}
 .artists-container {
     display: flex;
     flex-wrap: wrap;
