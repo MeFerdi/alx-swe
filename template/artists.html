@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/static/artists.css" />
     <link rel="stylesheet" type="text/css" href="/static/shortcut.css" />
     <style>
-        
+        /* Dropdown styling */
         .dropdown {
             position: absolute;
             top: 10px;
@@ -34,7 +34,11 @@
     </style>
 </head>
 <body>
-    <h1>Artists</h1>
+    <div class="header">
+        <h1>Artists</h1>
+        <input type="text" placeholder="Search..." class="search-bar">
+    </div>
+
     <div class="artists-container">
         <div class="dropdown">
             <button>Shortcuts</button>
@@ -42,10 +46,12 @@
                 <div class="shortcut-item">Alt + ← : Go Back</div>
                 <div class="shortcut-item">Alt + → : Go Forward</div>
                 <div class="shortcut-item">Alt + L : View Locations</div>
-                <div class="shortcut-item">Alt + D : View Datess</div>
+                <div class="shortcut-item">Alt + D : View Dates</div>
                 <div class="shortcut-item">Alt + R : View Relations</div>
             </div>
         </div>
+
+        <!-- Artists list generated dynamically -->
         {{if .}}
             {{range .}}
                 <a href="/artist/{{.ID}}">
