@@ -33,8 +33,8 @@ h1 {
 }
 
 .artist {
-    width: 300px; /* Larger size for the circles */
-    height: 300px;
+    width: 280px; /* Larger size for the circles */
+    height: 280px;
     border-radius: 50%;
     overflow: hidden;
     position: relative;
