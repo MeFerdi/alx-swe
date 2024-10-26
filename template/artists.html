@@ -5,88 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artists</title>
     <link rel="stylesheet" type="text/css" href="/static/artists.css" />
-    <style>
-        
-        .dropdown {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #12201c5b;
-            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-            padding: 12px 16px;
-            z-index: 1;
-            right: 0;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .shortcut-item {
-            margin-bottom: 8px;
-        }
-        
-    #search-container {
-        position: relative;
-        margin-bottom: 20px;
-    }
-    #search-input {
-        width: 300px;
-        padding: 10px;
-        font-size: 16px;
-    }
-    #search-results {
-        position: absolute;
-        width: 300px;
-        background-color: white;
-        border: 1px solid #ddd;
-        max-height: 300px;
-        overflow-y: auto;
-        display: none;
-        z-index: 1000;
-    }
-    .search-result-item {
-        padding: 10px;
-        cursor: pointer;
-        color: black; /* Ensure text is visible */
-    }
-    .search-result-item:hover {
-        background-color: #f0f0f0;
-    }
-    </style>
 </head>
 <body>
-    <h1>Artists</h1>
-    <div id="search-container">
-        <input type="text" id="search-input" placeholder="Search for an artist...">
-        <div id="search-results"></div>
-    </div>
-    <div class="artists-container">
-        <div class="dropdown">
-            <button>Shortcuts</button>
-            <div class="dropdown-content">
-                <div class="shortcut-item">Alt + ← : Go Back</div>
-                <div class="shortcut-item">Alt + → : Go Forward</div>
-            </div>
+    <header>
+        <h1>Artists</h1>
+        <div id="search-container">
+            <input type="text" id="search-input" placeholder="Search for an artist...">
+            <div id="search-results"></div>
         </div>
+    </header>
+
+    <main class="artists-container">
         {{if .}}
             {{range .}}
-                <a href="/artist/{{.ID}}">
-                    <div class="artist">
-                        <img src="{{.Image}}" alt="{{.Name}} Image">
-                        <h2>{{.Name}}</h2>
-                    </div>
-                </a>
+                <div class="artist-card">
+                    <a href="/artist/{{.ID}}">
+                        <div class="artist-image">
+                            <img src="{{.Image}}" alt="{{.Name}} Image">
+                        </div>
+                        <div class="artist-info">
+                            <h2>{{.Name}}</h2>
+                        </div>
+                    </a>
+                </div>
             {{end}}
         {{else}}
             <p>No artists found.</p>
         {{end}}
+    </main>
+
+    <div class="dropdown">
+        <button>Shortcuts</button>
+        <div class="dropdown-content">
+            <div class="shortcut-item">Alt + ← : Go Back</div>
+            <div class="shortcut-item">Alt + → : Go Forward</div>
+        </div>
     </div>
+
+    <script>
+        // Your existing JavaScript code here
+    </script>
+</body>
+</html>
 
    <script>
     const searchInput = document.getElementById('search-input');
