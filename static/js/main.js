@@ -14,5 +14,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Change slide every 5 seconds
-    setInterval(nextSlide, 15000);
+    setInterval(nextSlide, 12000);
 });
