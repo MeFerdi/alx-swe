@@ -50,6 +50,8 @@ body, html {
     animation: imageZoom 12s ease-in-out infinite;
 }
 
+/* ... (previous CSS remains the same) ... */
+
 .slide-img::after {
     content: '';
     position: absolute;
@@ -57,8 +59,10 @@ body, html {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.8); /* Increased opacity from 0.5 to 0.6 (60% dim) */
 }
+
+/* ... (rest of the CSS remains the same) ... */
 
 .hero-content {
     position: relative;
@@ -73,7 +77,7 @@ body, html {
     font-size: 90px;
     font-weight: 700;
     margin-bottom: 20px;
-    color: #fff;
+    color: #1b8e29;
     text-transform: uppercase;
     letter-spacing: 10px;
     line-height: 1;
