@@ -20,7 +20,7 @@ func main() {
 	http.HandleFunc("/", api.HomeHandler)
 	http.HandleFunc("/artists/", api.ArtistsHandler)
 	http.HandleFunc("/artist/", api.ArtistHandler) // Consolidated artist handler
-	http.HandleFunc("/search", api.SearchHandler)
+	http.HandleFunc("/search/", api.SearchHandler)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	// Start the server
