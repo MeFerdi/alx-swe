@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"text/template"
 )
@@ -211,5 +212,66 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	err = temp1.Execute(w, artistData)
 	if err != nil {
 		renderError(w, http.StatusInternalServerError, "Error executing template")
+	}
+}
+// SearchLocationHandler handles search requests for artist locations.
+func SearchLocationHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		renderError(w, http.StatusMethodNotAllowed, "Wrong method")
+		return
+	}
+
+	// Get the location query parameter from the URL
+	location := r.URL.Query().Get("location")
+	if location == "" {
+		renderError(w, http.StatusBadRequest, "Location query parameter is required")
+		return
+	}
+
+	// Retrieve the list of artists from the API
+	artists, err := ReadArtists("https://groupietrackers.herokuapp.com/api/artists")
+	if err != nil {
+		renderError(w, http.StatusInternalServerError, "Error fetching artists")
+		return
+	}
+
+	// Prepare a slice to hold artists who match the location
+	var filteredArtists []Artistlocation // Ensure ArtistData contains artist info and location info
+
+	// Iterate through each artist to fetch their locations
+	for _, artist := range artists {
+		// Convert artist.ID to string for the ReadLocation function
+		artistIDStr := strconv.Itoa(artist.ID)
+
+		// Fetch location data for each artist by ID
+		locationsResult, err := ReadLocation("https://groupietrackers.herokuapp.com/api/locations/", artistIDStr)
+		if err != nil {
+			log.Printf("Error fetching locations for artist ID %d: %v", artist.ID, err)
+			continue
+		}
+
+		// Check if any of the artist's locations match the query (case-insensitive)
+		for _, loc := range locationsResult.Locations {
+			if strings.EqualFold(loc, location) {
+				// Add matching artist to the filtered list
+				filteredArtists = append(filteredArtists, Artistlocation{
+					Artist:    artist,
+					Locations: locationsResult, // Store the locations for rendering later
+				})
+				break // No need to check other locations for this artist
+			}
+		}
+	}
+
+	// Render the filtered results using the search_results template
+	temp, err := template.ParseFiles("template/search_results.html")
+	if err != nil {
+		renderError(w, http.StatusInternalServerError, "Error loading search results template")
+		return
+	}
+
+	err = temp.Execute(w, filteredArtists) // Pass the filtered results to the template
+	if err != nil {
+		renderError(w, http.StatusInternalServerError, "Error executing search results template")
 	}
 }
