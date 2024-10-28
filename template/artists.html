@@ -5,93 +5,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artists</title>
     <link rel="stylesheet" type="text/css" href="/static/artists.css" />
-    <link rel="stylesheet" type="text/css" href="/static/shortcut.css" />
-    <style>
-        /* Dropdown styling */
-        .dropdown {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #12201c5b;
-            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-            padding: 12px 16px;
-            z-index: 1;
-            right: 0;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        /* Suggestions styling */
-        .suggestions-list {
-            position: absolute;
-            top: 100%; /* Adjust if necessary */
-            width: 100%;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 10;
-            display: none;
-        }
-
-        .suggestion-item {
-            padding: 8px;
-            cursor: pointer;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .suggestion-item:hover {
-            background-color: #f0f0f0;
-        }
-
-        .shortcut-item {
-            margin-bottom: 8px;
-        }
-    </style>
 </head>
 <body>
-    <div class="header">
+    <header>
         <h1>Artists</h1>
-        <div class="search-container" style="position: relative;">
-            <input type="text" placeholder="Search" class="search-bar" id="search-bar">
-            <div id="suggestions" class="suggestions-list"></div>
+        <div id="search-container">
+            <input type="text" id="search-input" placeholder="Search for an artist...">
+            <div id="search-results"></div>
         </div>
-    </div>
+    </header>
 
-    <div class="artists-container">
-        <div class="dropdown">
-            <button>Shortcuts</button>
-            <div class="dropdown-content">
-                <div class="shortcut-item">Alt + ← : Go Back</div>
-                <div class="shortcut-item">Alt + → : Go Forward</div>
-                <div class="shortcut-item">Alt + L : View Locations</div>
-                <div class="shortcut-item">Alt + D : View Dates</div>
-                <div class="shortcut-item">Alt + R : View Relations</div>
-            </div>
-        </div>
-
-        <!-- Artists list generated dynamically -->
+    <main class="artists-container">
         {{if .}}
             {{range .}}
-                <a href="/artist/{{.ID}}">
-                    <div class="artist">
-                        <img src="{{.Image}}" alt="{{.Name}} Image">
-                        <h2>{{.Name}}</h2>
-                    </div>
-                </a>
+                <div class="artist-card">
+                    <a href="/artist/{{.ID}}">
+                        <div class="artist-image">
+                            <img src="{{.Image}}" alt="{{.Name}} Image">
+                        </div>
+                        <div class="artist-info">
+                            <h2>{{.Name}}</h2>
+                        </div>
+                    </a>
+                </div>
             {{end}}
         {{else}}
             <p>No artists found.</p>
         {{end}}
+    </main>
+
+    <div class="dropdown">
+        <button>Shortcuts</button>
+        <div class="dropdown-content">
+            <div class="shortcut-item">Alt + ← : Go Back</div>
+            <div class="shortcut-item">Alt + → : Go Forward</div>
+        </div>
     </div>
 
-    <script src="../script/script.js"></script>
+    <script>
+        // Your existing JavaScript code here
+    </script>
+</body>
+</html>
+
+   <script>
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
+
+    console.log('Script loaded');
+
+    searchInput.addEventListener('input', function() {
+        const query = this.value.trim();
+        console.log('Search query:', query);
+
+        if (query.length > 0) {
+            const url = `/artists?q=${encodeURIComponent(query)}`;
+            console.log('Fetching from URL:', url);
+
+            fetch(url)
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Received data:', data);
+                    searchResults.innerHTML = '';
+                    if (Array.isArray(data) && data.length > 0) {
+                        data.forEach(artist => {
+                            console.log('Processing artist:', artist);
+                            const div = document.createElement('div');
+                            div.className = 'search-result-item';
+                            
+                            // Check for different possible name properties
+                            const artistName = artist.name || artist.Name || artist.name || 'Unknown Artist';
+                            div.textContent = artistName;
+                            
+                            div.addEventListener('click', () => {
+                                // Check for different possible ID properties
+                                const artistId = artist.id || artist.Id || artist.ID;
+                                console.log('Clicked artist:', artistName, 'ID:', artistId);
+                                
+                                if (artistId) {
+                                    window.location.href = `/artist/${artistId}`;
+                                } else {
+                                    console.error('Artist ID not found for', artistName);
+                                    alert('Sorry, unable to find details for this artist.');
+                                }
+                            });
+                            searchResults.appendChild(div);
+                        });
+                        searchResults.style.display = 'block';
+                    } else {
+                        console.log('No artists found or data is not an array');
+                        searchResults.innerHTML = '<div class="search-result-item">No artists found</div>';
+                        searchResults.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    searchResults.innerHTML = '<div class="search-result-item">Error fetching results</div>';
+                    searchResults.style.display = 'block';
+                });
+        } else {
+            console.log('Empty query, hiding results');
+            searchResults.style.display = 'none';
+        }
+    });
+
+    // Hide search results when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!searchResults.contains(event.target) && event.target !== searchInput) {
+            searchResults.style.display = 'none';
+        }
+    });
+
+    console.log('Event listeners added');
+</script>
 </body>
 </html>

@@ -4,29 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Groupie Tracker</title>
-    <link rel="stylesheet" type="text/css" href="/static/home.css" />
-    <link rel="stylesheet" type="text/css" href="/static/shortcut.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        .dropdown {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #12201c5b;
-            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-            padding: 12px 16px;
-            z-index: 1;
-            right: 0;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
+    <link rel="stylesheet" href="/static/home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/rockville.css" type="text/css">
 
         .shortcut-item {
             margin-bottom: 8px;
@@ -34,40 +15,54 @@
     </style>
 </head>
 <body>
-    <div class="background-overlay"></div>
-    <div class="dropdown">
-        <button>Shortcuts</button>
-        <div class="dropdown-content">
-            <div class="shortcut-item">Alt + ← : Go Back</div>
-            <div class="shortcut-item">Alt + → : Go Forward</div>
-            <div class="shortcut-item">Alt + L : View Locations</div>
-            <div class="shortcut-item">Alt + D : View Datess</div>
-            <div class="shortcut-item">Alt + R : View Relations</div>
+    <section class="hero-area">
+        <div class="hero-slides">
+            <div class="single-hero-slide active">
+                <div class="slide-img" style="background-image: url(/static/images/6.jpeg);"></div>
+                <div class="hero-content">
+                    <h2>
+                        <span class="text-main">Groupie Tracker</span>
+                    </h2>
+                    <p class="typewriter">Discover the world of music icons. Explore artists, their history, and
+                        upcoming concerts.</p>
+                    <a href="/artists" class="btn">Discover</a>
+                </div>
+            </div>
+            <div class="single-hero-slide">
+                <div class="slide-img" style="background-image: url(/static/images/bg4.jpeg);"></div>
+                <div class="hero-content">
+                    <h2>
+                        <span class="text-main">Groupie Tracker</span>
+                    </h2>
+                    <p class="typewriter">Discover the world of music icons. Explore artists, their history, and
+                        upcoming concerts.</p>
+                    <a href="/artists" class="btn">Explore Artists</a>
+                </div>
+            </div>
+            <div class="single-hero-slide">
+                <div class="slide-img" style="background-image: url(/static/images/bg7.jpeg);"></div>
+                <div class="hero-content">
+                    <h2>
+                        <span class="text-main">Groupie Tracker</span>
+                    </h2>
+                    <p class="typewriter">Discover the world of music icons. Explore artists, their history, and
+                        upcoming concerts.</p>
+                    <a href="/artists" class="btn">Explore Artists</a>
+                </div>
+            </div>
+            <div class="single-hero-slide">
+                <div class="slide-img" style="background-image: url(/static/images/bg-2.jpg);"></div>
+                <div class="hero-content">
+                    <h2>
+                        <span class="text-main">Groupie Tracker</span>
+                    </h2>
+                    <p class="typewriter">Discover the world of music icons. Explore artists, their history, and
+                        upcoming concerts.</p>
+                    <a href="/artists" class="btn">Explore Artists</a>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="container">
-        <header>
-            <h1>Groupie Tracker</h1>
-            <p class="tagline">Discover and Track Your Favorite Music Artists</p>
-        </header>
-        
-        <main>
-            <section class="description">
-                <p>Groupie Tracker is your ultimate destination for exploring and tracking popular music artists from around the world. Our extensive website provides you with detailed information about popular artists, including:</p>
-                <ul>
-                    <li>Band members and formation dates</li>
-                    <li>First album release dates</li>
-                    <li>Upcoming concert locations and dates</li>
-                    <li>Relationships between artists concert dates and venues</li>
-                </ul>
-            </section>
-            
-            <button class="view-artists-button" onclick="window.location.href='/artists'">Explore Artists</button>
-        </main>
-        
-        <footer>
-            <p>&copy; 2024 Groupie Tracker. All rights reserved.</p>
-        </footer>
-    </div>
+    </section>
+    <script src="/static/js/main.js"></script>
 </body>
 </html>
