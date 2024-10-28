@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Fetch suggestions from the server
         try {
-            const response = await fetch(`/search?query=${encodeURIComponent(query)}`);
+            const response = await fetch(`/search/?query=${encodeURIComponent(query)}`);
             const results = await response.json();
 
             // Clear previous suggestions
