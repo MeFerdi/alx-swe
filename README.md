@@ -22,13 +22,13 @@ Error handling to ensure stability across all pages
 To run the project locally follow these steps:
 1. Clone the repository
 ```bash
-git clone https://learn.zone01kisumu.ke/git/hanapiko/groupie-tracker-visualizations.git
+git clone https://learn.zone01kisumu.ke/git/hanapiko/groupie-tracker-search-bar.git
 ```
 
 2. Run the server
 - navigate to the directory
 ```bash
-cd groupie-tracker-visualizations
+cd groupie-tracker-search-bars
 ``` 
 then use the following command to run
 ```bash
