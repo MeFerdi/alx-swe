@@ -28,17 +28,39 @@
             display: block;
         }
 
+        /* Suggestions styling */
+        .suggestions-list {
+            position: absolute;
+            top: 100%; /* Adjust if necessary */
+            width: 100%;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 10;
+            display: none;
+        }
+
+        .suggestion-item {
+            padding: 8px;
+            cursor: pointer;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+
         .shortcut-item {
             margin-bottom: 8px;
         }
-
     </style>
 </head>
 <body>
     <div class="header">
         <h1>Artists</h1>
-        <div class="search-container">
-            <input type="text" placeholder="Search by creation date or first album..." class="search-bar" id="search-bar">
+        <div class="search-container" style="position: relative;">
+            <input type="text" placeholder="Search" class="search-bar" id="search-bar">
             <div id="suggestions" class="suggestions-list"></div>
         </div>
     </div>
@@ -69,7 +91,7 @@
             <p>No artists found.</p>
         {{end}}
     </div>
-    <script src="../script/script.js"></script>
 
-    </body>
-    </html>
+    <script src="../script/script.js"></script>
+</body>
+</html>
