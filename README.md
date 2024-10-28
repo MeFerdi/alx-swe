@@ -1,5 +1,5 @@
-# GROUPIE TRACKER VISUALIZATION
-![](https://www.globallogic.com/wp-content/uploads/2021/11/1024-Develop-Restful-API-using-Go-and-Gin.jpg)
+# GROUPIE TRACKER SEARCH
+![](https://webcasa.com/wp-content/uploads/2024/02/how-to-choose-the-best-web-designing-company-for-your-business.png)
 Groupie-Tracker-Visualizations consists of manipulating the data coming from the API and displaying it in the most presentable way possible.
 
 ## API Structure
@@ -22,13 +22,13 @@ Error handling to ensure stability across all pages
 To run the project locally follow these steps:
 1. Clone the repository
 ```bash
-git clone https://learn.zone01kisumu.ke/git/ferdyodhiambo/groupie-tracker.git
+git clone https://learn.zone01kisumu.ke/git/ferdyodhiambo/groupie-tracker-search-bar.git
 ```
 
 2. Run the server
 - navigate to the directory
 ```bash
-cd groupie-tracker
+cd groupie-tracker-search-bars
 ``` 
 then use the following command to run
 ```bash
@@ -43,10 +43,6 @@ go run .
     HTML/CSS
     JavaScript for frontend
 
-## Demo project
-![Demo GIF](images/art.gif)
-
-
 ## License
 
 This project is licensed under the terms of the [MIT License](./LICENSE).
@@ -57,3 +53,11 @@ For any questions or inquiries, feel free to reach out:
 
 ## Contribution
 * If you want to contribute to this project, feel free to open issues or pull requests. Any improvements, bug fixes, or features are welcome!
+
+## Contributors
+
+[Hanna Apiko](https://github.com/hanapiko)
+
+[Hezron Okwach](https://github.com/hezronokwach)
+
+[Ferdynand Odhiambo](https://github.com/MeFerdi)

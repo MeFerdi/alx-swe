@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"text/template"
 )
@@ -42,6 +43,57 @@ Parameters:
   - status: HTTP status code for the error
   - message: Error message to display
 */
+type SearchResult struct {
+	Name string `json:"name"`
+	Type string `json:"type"`
+}
+
+// SearchHandler handles search requests for "first album" and "creation date".
+func SearchHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		renderError(w, http.StatusMethodNotAllowed, "Wrong method")
+		return
+	}
+
+	query := r.URL.Query().Get("query")
+	if query == "" {
+		renderError(w, http.StatusBadRequest, "Query parameter is missing")
+		return
+	}
+
+	lowerQuery := strings.ToLower(query)
+
+	// Fetch artist data
+	artists, err := ReadArtists("https://groupietrackers.herokuapp.com/api/artists")
+	if err != nil {
+		renderError(w, http.StatusInternalServerError, "Error fetching artist data")
+		return
+	}
+
+	var results []SearchResult
+
+	// Search within CreationDate and FirstAlbum
+	for _, artist := range artists {
+		// Check FirstAlbum as a string
+		if strings.Contains(strings.ToLower(artist.FirstAlbum), lowerQuery) {
+			results = append(results, SearchResult{
+				Name: artist.Name,
+				Type: "first album date",
+			})
+		}
+		// Check CreationDate by converting it to a string
+		if strings.Contains(strconv.Itoa(artist.CreationDate), lowerQuery) {
+			results = append(results, SearchResult{
+				Name: artist.Name,
+				Type: "creation date",
+			})
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(results)
+}
+
 func renderError(w http.ResponseWriter, status int, message string) {
 	Init()
 	w.WriteHeader(status)
@@ -160,6 +212,7 @@ type ArtistData struct {
 	Dates     DateEntry `json:"dates"`
 	Locations Location  `json:"locations"`
 	Relations Relation  `json:"relations"`
+	Section   string    `json:"section"`
 }
 
 func ArtistHandler(w http.ResponseWriter, r *http.Request) {
@@ -169,7 +222,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !strings.HasPrefix(r.URL.Path, "/artist/") || len(strings.Split(r.URL.Path, "/")) != 3 {
-		renderError(w, http.StatusNotFound, "The Page you're trying to acess is unavailable")
+		renderError(w, http.StatusNotFound, "The Page you're trying to access is unavailable")
 		return
 	}
 
@@ -181,11 +234,18 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 
 	id := id1[len(id1)-1]
 
+	// Check for the section query parameter
+	section := r.URL.Query().Get("section")
+	if section != "" && section != "locations" && section != "dates" && section != "relations" && section != "all" {
+		renderError(w, http.StatusNotFound, "The section you're trying to access is unavailable")
+		return
+	}
+
 	// Fetch artist details
 	baseURL := "https://groupietrackers.herokuapp.com/api/artists/"
 	artistResult, err := ReadArtist(baseURL, id)
 	if err != nil || artistResult.ID == 0 {
-		renderError(w, http.StatusNotFound, "The Page you're trying to acess is unavailable")
+		renderError(w, http.StatusNotFound, "The Page you're trying to access is unavailable")
 		return
 	}
 
@@ -214,6 +274,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 		Dates:     datesResult,
 		Locations: locationsResult,
 		Relations: relationsResult,
+		Section:   section, // Add this line to pass the section to the template
 	}
 
 	// Load and execute the artist template with combined data
