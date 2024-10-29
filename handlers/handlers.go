@@ -195,24 +195,54 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 		renderError(w, http.StatusInternalServerError, "Error executing template")
 	}
 }
-
 func searchArtists(artists []Artist, query string) []Artist {
 	var results []Artist
 	query = strings.ToLower(query)
+
 	for _, artist := range artists {
+		// Check if the artist's name matches
 		if strings.Contains(strings.ToLower(artist.Name), query) {
 			results = append(results, artist)
+			continue
+		}
+
+		// Check if any member matches
+		for _, member := range artist.Members {
+			if strings.Contains(strings.ToLower(member), query) {
+				results = append(results, artist)
+				break // No need to check other members if a match is found
+			}
+		}
+
+		// Check location
+		if strings.Contains(strings.ToLower(artist.Locations), query) {
+			results = append(results, artist)
+			continue
+		}
+
+		// Check first album date
+		if strings.Contains(artist.ConcertDates, query) {
+			results = append(results, artist)
+			continue
+		}
+
+		if creationYear, err := strconv.Atoi(query); err == nil && artist.CreationDate == creationYear {
+			results = append(results, artist)
+			continue
 		}
 	}
+
 	return results
 }
 
 type ArtistData struct {
-	Artist    Artist    `json:"artist"`
-	Dates     DateEntry `json:"dates"`
-	Locations Location  `json:"locations"`
-	Relations Relation  `json:"relations"`
-	Section   string    `json:"section"`
+	Artist       Artist    `json:"artist"`
+	Dates        DateEntry `json:"dates"`
+	Locations    Location  `json:"locations"`
+	Relations    Relation  `json:"relations"`
+	Section      string    `json:"section"`
+	CreationDate int       `json:"creationDate"`
+	ConcertDates string    `json:"concertDates"`
 }
 
 func ArtistHandler(w http.ResponseWriter, r *http.Request) {
