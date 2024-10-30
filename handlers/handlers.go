@@ -169,14 +169,16 @@ func searchArtists(artists []Artist, query string) []map[string]string {
 		if strings.Contains(strings.ToLower(artist.FirstAlbum), query) {
 			results = append(results, map[string]string{
 				"name": artist.FirstAlbum,
+				"band": artist.Name,
 				"type": "artist/band",
 				"id":   strconv.Itoa(artist.ID),
 			})
 		}
-		// Search for Creation Datess
+		// Search for Creation Dates
 		if strings.Contains(strings.ToLower(strconv.Itoa(artist.CreationDate)), query) {
 			results = append(results, map[string]string{
 				"name": strconv.Itoa(artist.CreationDate),
+				"band": artist.Name,
 				"type": "artist/band",
 				"id":   strconv.Itoa(artist.ID),
 			})
