@@ -10,7 +10,7 @@
         .artists-container {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center; /* Center the cards horizontally */
+            justify-content: center;
             padding: 20px;
         }
         .artist-card {
@@ -18,7 +18,7 @@
             border: 1px solid #ccc;
             border-radius: 8px;
             overflow: hidden;
-            text-align: center; /* Center text in card */
+            text-align: center;
         }
         .artist-image img {
             max-width: 100%;
@@ -29,20 +29,63 @@
             background-color: rgb(31, 29, 29);
             border: 1px solid #ccc;
             z-index: 1000;
-            display: none; /* Hide by default */
+            display: none;
         }
         .search-result-item {
             padding: 10px;
             cursor: pointer;
         }
         .search-result-item:hover {
-            background-color: #1f1e1e; /* Highlight on hover */
+            background-color: #1f1e1e;
+        }
+         /* Container for Home and Shortcuts buttons */
+         .top-buttons-container {
+            display: flex;
+            align-items: center;
+            gap: 5px; /* Small gap between the buttons */
+            margin: 21px 0; /* Adds spacing from the top of the page */
+            position: absolute;
+            top: 0;
+            right: 300px;
+           
+            
+        }
+        /* Styling the home and shortcut buttons */
+        #home-button, .dropdown button {
+            width: 100px; /* Fixed width */
+            height: 40px; /* Fixed height */
+            padding: 0; /* Remove extra padding */
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+        }
+        #home-button:hover, .dropdown button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
     <header>
         <h1>Artists</h1>
+
+        <div class="top-buttons-container">
+            <button id="home-button" onclick="goHome()">Home</button>
+            <div class="dropdown">
+                <button>Shortcuts</button>
+                <div class="dropdown-content">
+                    <div class="shortcut-item">Alt + ← : Go Back</div>
+                    <div class="shortcut-item">Alt + → : Go Forward</div>
+                    <div class="shortcut-item">Alt + L : View Locations</div>
+                    <div class="shortcut-item">Alt + D : View Dates</div>
+                    <div class="shortcut-item">Alt + R : View Relations</div>
+                </div>
+            </div>
+        </div>
+
         <div id="search-container">
             <input type="text" id="search-input" placeholder="Search for an artist...">
             <div id="search-results"></div>
@@ -67,25 +110,10 @@
             <p>No artists found.</p>
         {{end}}
     </main>
-
-    <div class="dropdown">
-        <button>Shortcuts</button>
-        <div class="dropdown-content">
-            <div class="shortcut-item">Alt + ← : Go Back</div>
-            <div class="shortcut-item">Alt + → : Go Forward</div>
-            <div class="shortcut-item">Alt + L : View Locations</div>
-            <div class="shortcut-item">Alt + D : View Datess</div>
-            <div class="shortcut-item">Alt + R : View Relations</div>
-        </div>
-    </div>
-
-    <script>
-        // Your existing JavaScript code here
-    </script>
-</body>
-</html>
-
    <script>
+      function goHome() {
+            window.location.href = '/'; // Redirect to the home page
+        }
        const searchInput = document.getElementById('search-input');
        const searchResults = document.getElementById('search-results');
    
