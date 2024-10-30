@@ -17,7 +17,7 @@ searchInput.addEventListener('input', function() {
                         
                         // Create suggestion text
                         const name = item.name || item.Name || 'Unknown Artist';
-                        const type = item.type;
+                        const type = item.Name;
                         div.textContent = `${name} - ${type}`;
                         
                         div.addEventListener('click', () => {
