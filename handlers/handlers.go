@@ -48,51 +48,7 @@ type SearchResult struct {
 	Type string `json:"type"`
 }
 
-// SearchHandler handles search requests for "first album" and "creation date".
-func SearchHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		renderError(w, http.StatusMethodNotAllowed, "Wrong method")
-		return
-	}
-
-	query := r.URL.Query().Get("query")
-	if query == "" {
-		renderError(w, http.StatusBadRequest, "Query parameter is missing")
-		return
-	}
-
-	lowerQuery := strings.ToLower(query)
-
-	// Fetch artist data
-	artists, err := ReadArtists("https://groupietrackers.herokuapp.com/api/artists")
-	if err != nil {
-		renderError(w, http.StatusInternalServerError, "Error fetching artist data")
-		return
-	}
-
-	var results []SearchResult
-
-	// Search within CreationDate and FirstAlbum
-	for _, artist := range artists {
-		// Check FirstAlbum as a string
-		if strings.Contains(strings.ToLower(artist.FirstAlbum), lowerQuery) {
-			results = append(results, SearchResult{
-				Name: artist.Name,
-				Type: "first album date",
-			})
-		}
-		// Check CreationDate by converting it to a string
-		if strings.Contains(strconv.Itoa(artist.CreationDate), lowerQuery) {
-			results = append(results, SearchResult{
-				Name: artist.Name,
-				Type: "creation date",
-			})
-		}
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(results)
-}
+// SearchHandler handles search requests for "first album" and "creation date
 
 func renderError(w http.ResponseWriter, status int, message string) {
 	Init()
@@ -196,14 +152,33 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func searchArtists(artists []Artist, query string) []Artist {
-	var results []Artist
+func searchArtists(artists []Artist, query string) []map[string]string {
+	var results []map[string]string
 	query = strings.ToLower(query)
+
 	for _, artist := range artists {
+		// Search artist name
 		if strings.Contains(strings.ToLower(artist.Name), query) {
-			results = append(results, artist)
+			results = append(results, map[string]string{
+				"name": artist.Name,
+				"type": "artist/band",
+				"id":   strconv.Itoa(artist.ID),
+			})
+		}
+
+		// Search members
+		for _, member := range artist.Members {
+			if strings.Contains(strings.ToLower(member), query) {
+				results = append(results, map[string]string{
+					"name":     member,
+					"type":     "member",
+					"bandName": artist.Name,
+					"id":       strconv.Itoa(artist.ID),
+				})
+			}
 		}
 	}
+
 	return results
 }
 
