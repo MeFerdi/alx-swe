@@ -80,12 +80,17 @@
                                    div.textContent = `${item.name} - ${item.type}`;
                                } else if (item.type === 'member') {
                                    div.textContent = `${item.name} - ${item.type} - ${item.bandName}`;
+                               }else if (item.type === 'location') {
+                                   div.textContent = `${item.name} - ${item.type} - ${item.bandName}`;
                                }
                                
                                div.addEventListener('click', () => {
                                    console.log('Clicked item:', item.name, 'ID:', item.id);
-                                   
-                                   if (item.id) {
+                                   if ((item.id) && (item.type )=== 'location') {
+                                    window.location.href = `/artist/${item.id}?section=locations`;
+
+                                                                   
+                                    }else if (item.id) {
                                        window.location.href = `/artist/${item.id}`;
                                    } else {
                                        console.error('Artist ID not found for', item.name);
