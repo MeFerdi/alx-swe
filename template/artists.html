@@ -78,6 +78,85 @@
             <div class="shortcut-item">Alt + R : View Relations</div>
         </div>
     </div>
-    <script src="/static/js/script.js"></script>
+
+    <script>
+        // Your existing JavaScript code here
+    </script>
+</body>
+</html>
+
+   <script>
+       const searchInput = document.getElementById('search-input');
+       const searchResults = document.getElementById('search-results');
+   
+       console.log('Script loaded');
+   
+       searchInput.addEventListener('input', function() {
+           const query = this.value.trim();
+           console.log('Search query:', query);
+   
+           if (query.length > 0) {
+               const url = `/artists?q=${encodeURIComponent(query)}`;
+               console.log('Fetching from URL:', url);
+   
+               fetch(url)
+                   .then(response => {
+                       console.log('Response status:', response.status);
+                       return response.json();
+                   })
+                   .then(data => {
+                       console.log('Received data:', data);
+                       searchResults.innerHTML = '';
+                       if (Array.isArray(data) && data.length > 0) {
+                           data.forEach(item => {
+                               console.log('Processing item:', item);
+                               const div = document.createElement('div');
+                               div.className = 'search-result-item';
+                               
+                               if (item.type === 'artist/band') {
+                                   div.textContent = `${item.name} - ${item.type}`;
+                               } else if (item.type === 'member') {
+                                   div.textContent = `${item.name} - ${item.type} - ${item.bandName}`;
+                               }
+                               
+                               div.addEventListener('click', () => {
+                                   console.log('Clicked item:', item.name, 'ID:', item.id);
+                                   
+                                   if (item.id) {
+                                       window.location.href = `/artist/${item.id}`;
+                                   } else {
+                                       console.error('Artist ID not found for', item.name);
+                                       alert('Sorry, unable to find details for this artist.');
+                                   }
+                               });
+                               searchResults.appendChild(div);
+                           });
+                           searchResults.style.display = 'block';
+                       } else {
+                           console.log('No results found or data is not an array');
+                           searchResults.innerHTML = '<div class="search-result-item">No results found</div>';
+                           searchResults.style.display = 'block';
+                       }
+                   })
+                   .catch(error => {
+                       console.error('Fetch error:', error);
+                       searchResults.innerHTML = '<div class="search-result-item">Error fetching results</div>';
+                       searchResults.style.display = 'block';
+                   });
+           } else {
+               console.log('Empty query, hiding results');
+               searchResults.style.display = 'none';
+           }
+       });
+   
+       // Hide search results when clicking outside
+       document.addEventListener('click', function(event) {
+           if (!searchResults.contains(event.target) && event.target !== searchInput) {
+               searchResults.style.display = 'none';
+           }
+       });
+   
+       console.log('Event listeners added');
+   </script>
 </body>
 </html>
