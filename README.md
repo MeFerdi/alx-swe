@@ -1,6 +1,6 @@
-# GROUPIE TRACKER SEARCH
+# GROUPIE TRACKER SEARCH-Bar
 ![](https://webcasa.com/wp-content/uploads/2024/02/how-to-choose-the-best-web-designing-company-for-your-business.png)
-Groupie-Tracker-Visualizations consists of manipulating the data coming from the API and displaying it in the most presentable way possible.
+Groupie-Tracker-Search-Bar consists of creating a functional program that searches, inside your website, for a specific text input.
 
 ## API Structure
 The API, that consists of four parts:
