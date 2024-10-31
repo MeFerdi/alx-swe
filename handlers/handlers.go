@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"path/filepath"
@@ -42,6 +43,13 @@ Parameters:
   - status: HTTP status code for the error
   - message: Error message to display
 */
+type SearchResult struct {
+	Name string `json:"name"`
+	Type string `json:"type"`
+}
+
+// SearchHandler handles search requests for "first album" and "creation date
+
 func renderError(w http.ResponseWriter, status int, message string) {
 	Init()
 	w.WriteHeader(status)
@@ -103,8 +111,8 @@ Parameters:
   - r: *http.Request containing the request details
 */
 func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/artists/" {
-		renderError(w, http.StatusNotFound, "The Page you're trying to acess is unavailable")
+	if r.URL.Path != "/artists" && r.URL.Path != "/artists/" {
+		renderError(w, http.StatusNotFound, "The Page you're trying to access is unavailable")
 		return
 	}
 
@@ -113,6 +121,24 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Fetch all artists
+	result, err := ReadArtists("https://groupietrackers.herokuapp.com/api/artists")
+	if err != nil {
+		renderError(w, http.StatusInternalServerError, "Error fetching artists")
+		return
+	}
+
+	// Check if it's a search request
+	query := r.URL.Query().Get("q")
+	if query != "" {
+		// Perform search
+		searchResults := searchArtists(result, query)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(searchResults)
+		return
+	}
+
+	// If not a search request, render the full artists page
 	templatePath := filepath.Join("template", "artists.html")
 	temp1, err := template.ParseFiles(templatePath)
 	if err != nil {
@@ -120,16 +146,73 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := ReadArtists("https://groupietrackers.herokuapp.com/api/artists")
-	if err != nil {
-		renderError(w, http.StatusInternalServerError, "Error fetching artists")
-		return
-	}
-
 	err = temp1.Execute(w, result)
 	if err != nil {
 		renderError(w, http.StatusInternalServerError, "Error executing template")
 	}
+}
+
+func searchArtists(artists []Artist, query string) []map[string]string {
+	var results []map[string]string
+	query = strings.ToLower(query)
+
+	for _, artist := range artists {
+		// Search artist name
+		if strings.Contains(strings.ToLower(artist.Name), query) {
+			results = append(results, map[string]string{
+				"name": artist.Name,
+				"type": "artist/band",
+				"id":   strconv.Itoa(artist.ID),
+			})
+		}
+
+		// Search members
+		for _, member := range artist.Members {
+			if strings.Contains(strings.ToLower(member), query) {
+				results = append(results, map[string]string{
+					"name":     member,
+					"type":     "member",
+					"bandName": artist.Name,
+					"id":       strconv.Itoa(artist.ID),
+				})
+			}
+		}
+
+		// Search locations
+		locations, err := fetchLocations(artist.Locations)
+		if err == nil {
+			for _, location := range locations {
+				if strings.Contains(strings.ToLower(location), query) {
+					results = append(results, map[string]string{
+						"name":     location,
+						"type":     "location",
+						"bandName": artist.Name,
+						"id":       strconv.Itoa(artist.ID),
+					})
+				}
+			}
+		}
+	}
+
+	return results
+}
+
+func fetchLocations(locationURL string) ([]string, error) {
+	resp, err := http.Get(locationURL)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var locationData struct {
+		Locations []string `json:"locations"`
+	}
+
+	if err := json.NewDecoder(resp.Body).Decode(&locationData); err != nil {
+		return nil, err
+	}
+
+	return locationData.Locations, nil
 }
 
 type ArtistData struct {

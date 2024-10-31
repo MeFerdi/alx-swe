@@ -1,119 +1,193 @@
+@font-face {
+    font-family: 'Rockville Solid Regular';
+    src: url('/static/fonts/Rockville Solid.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
-    background-color: #1a1a1a;
+    background-color: #505050;
     color: #fff;
-    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
     min-height: 100vh;
-    overflow-x: hidden;
-    overflow-y: auto;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+header {
+    background-color: #1e1e1e;
+    padding: 40px 0;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+/* Header styling to align title and search bar */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+    gap: 20px;
 }
 
 h1 {
+    font-family: 'Rockville Solid Regular', sans-serif;
     font-size: 48px;
-    margin: 40px 0;
+    margin: 0;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: #18ce21;
-    text-align: center;
+    color: #1b8e29;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
-.artists-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 50px;
-    justify-content: center;
-    padding-bottom: 40px;
-    overflow-y: auto;
-    width: 100%;
-}
-
-.artist {
-    width: 300px; /* Larger size for the circles */
-    height: 300px;
-    border-radius: 50%;
-    overflow: hidden;
+#search-container {
     position: relative;
-    background-color: #333;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-    animation: float 4s infinite ease-in-out;
+    max-width: 300px;
+    margin: 30px auto;
 }
 
-.artist img {
+#search-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #2a2a2a;
+    border: none;
+    color: #fff;
+    border-radius: 5px;
+}
+
+/* Search bar styling */
+.search-bar {
+    padding: 8px 12px;
+    width: 250px;
+    border: 1px solid #333;
+    border-radius: 20px;
+    outline: none;
+    background-color: #2c2c2c;
+    color: #fff;
+    font-size: 16px;
+    transition: box-shadow 0.3s ease;
+}
+
+.search-bar::placeholder {
+    color: #888;
+}
+
+/* Focus effect */
+.search-bar:focus {
+    box-shadow: 0 0 8px rgba(24, 206, 33, 0.6);
+}
+.suggestions-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #1a1a1a;
+    border: 1px solid #ccc;
+    border-radius: 0 0 8px 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    z-index: 10; /* Ensure it appears above other content */
+}
+
+.suggestion-item {
+    padding: 8px 10px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.suggestion-item:hover {
+    background-color: #333;
+}
+.artists-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 40px;
+    padding: 20px 0;
+}
+
+.artist-card {
+    background-color: #1e1e1e;
+    border-radius: 10px;
+
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.artist-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.artist-image {
+    height: 250px;
+    overflow: hidden;
+}
+
+.artist-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 50%;
+    transition: transform 0.3s ease;
 }
 
-.artist h2 {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 10px;
-    font-size: 20px;
+.artist-card:hover .artist-image img {
+    transform: scale(1.05);
+}
+
+.artist-info {
+    padding: 20px;
+}
+
+.artist-info h2 {
     margin: 0;
-    color: #20a820;
-    text-transform: uppercase;
-}
-
-.artist:hover {
-    transform: scale(1.1);
-    box-shadow: 0 16px 32px rgba(32, 180, 27, 0.6);
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-/* Floating animation */
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-20px);
-    }
-}
-
-/* Style the scrollbar */
-body::-webkit-scrollbar {
-    width: 12px;
-}
-
-body::-webkit-scrollbar-track {
-    background: #1a1a1a;
-}
-
-body::-webkit-scrollbar-thumb {
-    background-color: #2c641e;
-    border-radius: 20px;
-    border: 3px solid #1a1a1a;
+    font-size: 20px;
+    text-align: center;
+    color: #fff;
+    font-weight: 600;
 }
 
 .dropdown {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
+.dropdown button {
+    background-color: #2a2a2a;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown button:hover {
+    background-color: #3a3a3a;
 }
 
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #12201c5b;
+    background-color: #2a2a2a;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     padding: 12px 16px;
     z-index: 1;
     right: 0;
+    border-radius: 5px;
+    min-width: 200px;
 }
 
 .dropdown:hover .dropdown-content {
@@ -121,42 +195,23 @@ body::-webkit-scrollbar-thumb {
 }
 
 .shortcut-item {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    color: #fff;
+    font-size: 14px;
 }
 
-/* Responsive design */
-@media (max-width: 1024px) {
-    .artist {
-        width: 250px;
-        height: 250px;
-    }
-    h1 {
-        font-size: 36px;
+/* Add responsive padding */
+@media (max-width: 1240px) {
+    .container {
+        padding: 40px 20px;
     }
 }
 
 @media (max-width: 768px) {
-    .artist {
-        width: 200px;
-        height: 200px;
+    .container {
+        padding: 20px 10px;
     }
-    h1 {
-        font-size: 32px;
-        margin: 30px 0;
-    }
-}
-
-@media (max-width: 480px) {
-    .artist {
+    .search-bar {
         width: 150px;
-        height: 150px;
-    }
-    h1 {
-        font-size: 24px;
-        margin: 20px 0;
-    }
-
-    .artist h2 {
-        font-size: 16px;
     }
 }
