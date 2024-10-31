@@ -64,10 +64,14 @@ h1 {
 .search-result-item {
     padding: 10px;
     font-size: 14px;
-    color:  white;
+    color: white;
     cursor: pointer;
     transition: background-color 0.2s;
 }
+.search-result-item:hover {
+    background-color: green;
+}
+
 
 
 #search-container {
