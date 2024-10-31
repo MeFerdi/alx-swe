@@ -297,6 +297,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 		renderError(w, http.StatusInternalServerError, "Error executing template")
 	}
 }
+
 // SearchLocationHandler handles search requests for artist locations.
 func SearchLocationHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
