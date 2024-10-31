@@ -195,9 +195,42 @@ func searchArtists(artists []Artist, query string) []map[string]string {
 				})
 			}
 		}
+
+		// Search locations
+		locations, err := fetchLocations(artist.Locations)
+		if err == nil {
+			for _, location := range locations {
+				if strings.Contains(strings.ToLower(location), query) {
+					results = append(results, map[string]string{
+						"name":     location,
+						"type":     "location",
+						"bandName": artist.Name,
+						"id":       strconv.Itoa(artist.ID),
+					})
+				}
+			}
+		}
 	}
 
 	return results
+}
+
+func fetchLocations(locationURL string) ([]string, error) {
+	resp, err := http.Get(locationURL)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var locationData struct {
+		Locations []string `json:"locations"`
+	}
+
+	if err := json.NewDecoder(resp.Body).Decode(&locationData); err != nil {
+		return nil, err
+	}
+
+	return locationData.Locations, nil
 }
 
 type ArtistData struct {
