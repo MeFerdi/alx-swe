@@ -2,6 +2,15 @@
 ![](https://webcasa.com/wp-content/uploads/2024/02/how-to-choose-the-best-web-designing-company-for-your-business.png)
 Groupie-Tracker-Search-Bar consists of creating a functional program that searches, inside your website, for a specific text input.
 
+## Features
+* The program should handle at least these search cases :
+    - artist/band name
+    -  members
+    - locations
+    - first album date
+    - creation date
+- The program must handle search input as case-insensitive.
+
 ## API Structure
 The API, that consists of four parts:
 * Artists, containing information about some bands and artists including:
@@ -14,16 +23,8 @@ The API, that consists of four parts:
 * Dates, consists in their last and/or upcoming concert dates.
 * Relation links all the other parts, artists, dates and locations.
 
-## Features
-* The program should handle at least these search cases :
-    - artist/band name
-    -  members
-    - locations
-    - first album date
-    - creation date
 
-- The program must handle search input as case-insensitive.
-
+## How to run
 To run the project locally follow these steps:
 1. Clone the repository
 ```bash
@@ -33,7 +34,7 @@ git clone https://learn.zone01kisumu.ke/git/ferdyodhiambo/groupie-tracker-search
 2. Run the server
 - navigate to the directory
 ```bash
-cd groupie-tracker-search-bars
+cd groupie-tracker-search-bar
 ``` 
 then use the following command to run
 ```bash
