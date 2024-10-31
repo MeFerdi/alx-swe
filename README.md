@@ -1,4 +1,4 @@
-# GROUPIE TRACKER SEARCH-Bar
+# GROUPIE TRACKER SEARCH-BAR
 ![](https://webcasa.com/wp-content/uploads/2024/02/how-to-choose-the-best-web-designing-company-for-your-business.png)
 Groupie-Tracker-Search-Bar consists of creating a functional program that searches, inside your website, for a specific text input.
 
@@ -15,9 +15,14 @@ The API, that consists of four parts:
 * Relation links all the other parts, artists, dates and locations.
 
 ## Features
-User-friendly website to display artist information and concert details
-Client-server communication for real-time data fetching
-Error handling to ensure stability across all pages
+* The program should handle at least these search cases :
+    - artist/band name
+    -  members
+    - locations
+    - first album date
+    - creation date
+
+- The program must handle search input as case-insensitive.
 
 To run the project locally follow these steps:
 1. Clone the repository
