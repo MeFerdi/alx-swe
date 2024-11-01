@@ -297,5 +297,3 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 		renderError(w, http.StatusInternalServerError, "Error executing template")
 	}
 }
-
-
