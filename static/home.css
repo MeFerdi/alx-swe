@@ -155,3 +155,33 @@ body, html {
         transform: scale(1.1);
     }
 }
+
+@media (max-width: 600px) {
+    .text-main {
+        font-size: 1.5rem;
+    }
+
+    .typewriter {
+        font-size: 0.9rem;
+    }
+
+    .hero-content {
+        padding: 5px;
+        width: 90%;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (min-width: 1025px) {
+    .text-main {
+        font-size: 2.5rem;
+    }
+
+    .typewriter {
+        font-size: 1.2rem;
+    }
+}
