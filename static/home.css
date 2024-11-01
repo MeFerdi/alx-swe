@@ -197,5 +197,7 @@ body, html {
 
     .typewriter {
         font-size: 1.2rem;
+        white-space: nowrap;
+        border-right: .15em solid #fff;
     }
 }
