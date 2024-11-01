@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"path/filepath"
@@ -128,11 +129,19 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Fetch locations
+	locations, err := fetchLocations("https://groupietrackers.herokuapp.com/api/locations")
+	if err != nil {
+		renderError(w, http.StatusInternalServerError, "Error fetching locations")
+		fmt.Println(err)
+		return
+	}
+
 	// Check if it's a search request
 	query := r.URL.Query().Get("q")
 	if query != "" {
 		// Perform search
-		searchResults := searchArtists(result, query)
+		searchResults := searchArtists(result, locations, query)
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(searchResults)
 		return
@@ -152,7 +161,7 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func searchArtists(artists []Artist, query string) []map[string]string {
+func searchArtists(artists []Artist, locations []Location, query string) []map[string]string {
 	var results []map[string]string
 	query = strings.ToLower(query)
 
@@ -179,17 +188,19 @@ func searchArtists(artists []Artist, query string) []map[string]string {
 		}
 
 		// Search locations
-		locations, err := fetchLocations(artist.Locations)
-		if err == nil {
-			for _, location := range locations {
-				if strings.Contains(strings.ToLower(location), query) {
-					results = append(results, map[string]string{
-						"name":     location,
-						"type":     "location",
-						"bandName": artist.Name,
-						"id":       strconv.Itoa(artist.ID),
-					})
+		for _, location := range locations {
+			if int64(artist.ID) == location.ID {
+				for _, loc := range location.Locations {
+					if strings.Contains(strings.ToLower(loc), query) {
+						results = append(results, map[string]string{
+							"name":     loc,
+							"type":     "location",
+							"bandName": artist.Name,
+							"id":       strconv.Itoa(artist.ID),
+						})
+					}
 				}
+				break
 			}
 		}
 	}
@@ -197,22 +208,26 @@ func searchArtists(artists []Artist, query string) []map[string]string {
 	return results
 }
 
-func fetchLocations(locationURL string) ([]string, error) {
-	resp, err := http.Get(locationURL)
+func fetchLocations(baseURL string) ([]Location, error) {
+	response, err := http.Get(baseURL)
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer response.Body.Close()
 
-	var locationData struct {
-		Locations []string `json:"locations"`
+	if response.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("API returned status code: %d", response.StatusCode)
 	}
 
-	if err := json.NewDecoder(resp.Body).Decode(&locationData); err != nil {
+	var locationResponse struct {
+		Index []Location `json:"index"`
+	}
+	err = json.NewDecoder(response.Body).Decode(&locationResponse)
+	if err != nil {
 		return nil, err
 	}
 
-	return locationData.Locations, nil
+	return locationResponse.Index, nil
 }
 
 type ArtistData struct {
