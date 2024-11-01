@@ -162,7 +162,11 @@ body, html {
     }
 
     .typewriter {
-        font-size: 0.9rem;
+        font-size: 3.5vw;
+        white-space: normal;
+        max-width: 90%;
+        line-height: 1.2;
+        border-right: 0.1em solid #fff;
     }
 
     .hero-content {
