@@ -176,6 +176,16 @@ body, html {
     }
 }
 
+@media (min-width: 601px) and (max-width: 1024px) {
+    .typewriter {
+        font-size: 2.5vw;
+        white-space: normal; /* Allows text wrapping */
+        max-width: 80%; 
+        line-height: 1.2;
+        border-right: 0.12em solid #fff;
+    }
+}
+
 @media (min-width: 1025px) {
     .text-main {
         font-size: 2.5rem;
