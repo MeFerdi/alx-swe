@@ -155,3 +155,49 @@ body, html {
         transform: scale(1.1);
     }
 }
+
+@media (max-width: 600px) {
+    .text-main {
+        font-size: 1.5rem;
+    }
+
+    .typewriter {
+        font-size: 3.5vw;
+        white-space: normal;
+        max-width: 90%;
+        line-height: 1.2;
+        border-right: 0.1em solid #fff;
+    }
+
+    .hero-content {
+        padding: 5px;
+        width: 90%;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+    .typewriter {
+        font-size: 2.5vw;
+        white-space: normal; /* Allows text wrapping */
+        max-width: 80%; 
+        line-height: 1.2;
+        border-right: 0.12em solid #fff;
+    }
+}
+
+@media (min-width: 1025px) {
+    .text-main {
+        font-size: 2.5rem;
+    }
+
+    .typewriter {
+        font-size: 1.2rem;
+        white-space: nowrap;
+        border-right: .15em solid #fff;
+    }
+}
