@@ -201,26 +201,6 @@ h1 {
     color: #fff;
     font-size: 14px;
 }
-
-/* Button Styles */
-#home-button,
-.dropdown button {
-    width: 100px; /* Fixed width */
-    height: 40px; /* Fixed height */
-    padding: 0; /* Remove extra padding */
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-#home-button:hover,
-.dropdown button:hover {
-    background-color: #45a049;
-}
-
 /* Responsive Design */
 @media (max-width: 1240px) {
     .container {
