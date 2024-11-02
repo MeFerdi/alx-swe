@@ -13,7 +13,6 @@
             top: 10px;
             right: 10px;
         }
-
         .dropdown-content {
             display: none;
             position: absolute;
@@ -23,15 +22,12 @@
             z-index: 1;
             right: 0;
         }
-
         .dropdown:hover .dropdown-content {
             display: block;
         }
-
         .shortcut-item {
             margin-bottom: 8px;
         }
-
         .hidden {
             display: none;
         }
@@ -49,13 +45,10 @@
                 <div class="shortcut-item">Alt + R : View Relations</div>
             </div>
         </div>
-        </div>
-
         <div class="artist-header">
             <img src="{{.Artist.Image}}" alt="{{.Artist.Name}} Image" class="artist-image">
             <h2>{{.Artist.Name}}</h2>
         </div>
-
         <div class="artist-details">
             <p><strong>Members:</strong></p>
             <ul class="members-list">
@@ -65,7 +58,6 @@
             </ul>
             <p><strong>Creation Date:</strong> {{.Artist.CreationDate}}</p>
             <p><strong>First Album:</strong> {{.Artist.FirstAlbum}}</p>
-
             <div class="links">
                 <p><strong></strong>
                     {{if .Locations.Locations}}
@@ -95,12 +87,10 @@
                     <a href="?section=all">View All</a>
                 </p>
             </div>
-
             <div class="back-button-container">
                 <button class="back-button" onclick="history.back()">← Back</button>
             </div>
         </div>
-
         <section id="locations" class="hidden">
             <h3>Location Details</h3>
             <div class="relation-card">
@@ -113,7 +103,6 @@
                 </ul>
             </div>
         </section>
-
         <section id="dates" class="hidden">
             <h3>Concert Dates</h3>
             <div class="relation-card">
@@ -124,7 +113,6 @@
                 </ul>
             </div>
         </section>
-
         <section id="relations" class="hidden">
             <h3>Relations</h3>
             {{if .Relations.Locations}}
