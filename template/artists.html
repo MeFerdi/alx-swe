@@ -7,26 +7,14 @@
     <link rel="stylesheet" type="text/css" href="/static/artists.css" />
 </head>
 <body>
-    <header>
-        <h1>Artists</h1>
-        <div class="container">
-            <div class="dropdown">
-                <button>Shortcuts</button>
-                <div class="dropdown-content">
-                    <div class="shortcut-item">Alt + ← : Go Back</div>
-                    <div class="shortcut-item">Alt + → : Go Forward</div>
-                    <div class="shortcut-item">Alt + L : View Locations</div>
-                    <div class="shortcut-item">Alt + D : View Dates</div>
-                    <div class="shortcut-item">Alt + R : View Relations</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="search-container">
-            <input type="text" id="search-input" placeholder="Search for an artist...">
-            <div id="search-results"></div>
-        </div>
-    </header>
+   <header>
+    <h1 class="artists-title">Artists</h1>
+    <div class="artists-title-bg"></div>
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search for an artist...">
+        <div id="search-results"></div>
+    </div>
+</header>
 
     <main class="artists-container">
         {{if .}}
@@ -35,6 +23,7 @@
                     <a href="/artist/{{.ID}}">
                         <div class="artist-image">
                             <img src="{{.Image}}" alt="{{.Name}} Image">
+
                         </div>
                         <div class="artist-info">
                             <h2>{{.Name}}</h2>

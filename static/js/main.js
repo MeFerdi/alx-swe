@@ -3,9 +3,19 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentSlide = 0;
 
     function showSlide(index) {
+        // Fade out current slide
         slides[currentSlide].classList.remove('active');
+        slides[currentSlide].classList.add('fade-out');
+
+        // Fade in next slide
         slides[index].classList.add('active');
-        currentSlide = index;
+        slides[index].classList.remove('fade-out');
+
+        // After transition, remove fade-out class from previous slide
+        setTimeout(() => {
+            slides[currentSlide].classList.remove('fade-out');
+            currentSlide = index;
+        }, 1000); // This should match the transition duration in CSS
     }
 
     function nextSlide() {
@@ -13,6 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
         showSlide(nextIndex);
     }
 
-    // Change slide every 5 seconds
-    setInterval(nextSlide, 3000);
+    // Set initial state
+    slides[currentSlide].classList.add('active');
+
+    // Change slide every 12 seconds
+    setInterval(nextSlide, 12000);
 });
