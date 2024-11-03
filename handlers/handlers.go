@@ -174,6 +174,33 @@ func searchArtists(artists []Artist, locations []Location, query string) []map[s
 				"id":   strconv.Itoa(artist.ID),
 			})
 		}
+		// Search for Album date
+		if strings.Contains(strings.ToLower(artist.FirstAlbum), query) {
+			results = append(results, map[string]string{
+				"name": artist.FirstAlbum,
+				"band": artist.Name, // Include artist name with album date
+				"type": "dates",
+				"id":   strconv.Itoa(artist.ID),
+			})
+		}
+		// Search for Creation Dates
+		if strings.Contains(strings.ToLower(strconv.Itoa(artist.CreationDate)), query) {
+			results = append(results, map[string]string{
+				"name": strconv.Itoa(artist.CreationDate),
+				"band": artist.Name, // Include artist name with creation date
+				"type": "dates",
+				"id":   strconv.Itoa(artist.ID),
+			})
+		}
+		// Search for Concert Dates
+		if strings.Contains(strings.ToLower(artist.ConcertDates), query) {
+			results = append(results, map[string]string{
+				"name": artist.ConcertDates,
+				"band": artist.Name, // Include artist name with concert date
+				"type": "dates",
+				"id":   strconv.Itoa(artist.ID),
+			})
+		}
 
 		// Search members
 		for _, member := range artist.Members {
@@ -231,11 +258,13 @@ func fetchLocations(baseURL string) ([]Location, error) {
 }
 
 type ArtistData struct {
-	Artist    Artist    `json:"artist"`
-	Dates     DateEntry `json:"dates"`
-	Locations Location  `json:"locations"`
-	Relations Relation  `json:"relations"`
-	Section   string    `json:"section"`
+	Artist       Artist    `json:"artist"`
+	Dates        DateEntry `json:"dates"`
+	Locations    Location  `json:"locations"`
+	Relations    Relation  `json:"relations"`
+	Section      string    `json:"section"`
+	CreationDate int       `json:"creationDate"`
+	ConcertDates string    `json:"concertDates"`
 }
 
 func ArtistHandler(w http.ResponseWriter, r *http.Request) {

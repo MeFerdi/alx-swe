@@ -9,6 +9,19 @@
 <body>
     <header>
         <h1>Artists</h1>
+        <div class="container">
+            <div class="dropdown">
+                <button>Shortcuts</button>
+                <div class="dropdown-content">
+                    <div class="shortcut-item">Alt + ← : Go Back</div>
+                    <div class="shortcut-item">Alt + → : Go Forward</div>
+                    <div class="shortcut-item">Alt + L : View Locations</div>
+                    <div class="shortcut-item">Alt + D : View Dates</div>
+                    <div class="shortcut-item">Alt + R : View Relations</div>
+                </div>
+            </div>
+        </div>
+
         <div id="search-container">
             <input type="text" id="search-input" placeholder="Search for an artist...">
             <div id="search-results"></div>
@@ -42,6 +55,9 @@
         </div>
     </div>
    <script>
+      function goHome() {
+            window.location.href = '/'; // Redirect to the home page
+        }
        const searchInput = document.getElementById('search-input');
        const searchResults = document.getElementById('search-results');
    
@@ -61,44 +77,47 @@
                        return response.json();
                    })
                    .then(data => {
-                       console.log('Received data:', data);
-                       searchResults.innerHTML = '';
-                       if (Array.isArray(data) && data.length > 0) {
-                           data.forEach(item => {
-                               console.log('Processing item:', item);
-                               const div = document.createElement('div');
-                               div.className = 'search-result-item';
-                               
-                               if (item.type === 'artist/band') {
-                                   div.textContent = `${item.name} - ${item.type}`;
-                               } else if (item.type === 'member') {
-                                   div.textContent = `${item.name} - ${item.type} - ${item.bandName}`;
-                               }else if (item.type === 'location') {
-                                   div.textContent = `${item.name} - ${item.type} - ${item.bandName}`;
-                               }
-                               
-                               div.addEventListener('click', () => {
-                                   console.log('Clicked item:', item.name, 'ID:', item.id);
-                                   if ((item.id) && (item.type )=== 'location') {
-                                    window.location.href = `/artist/${item.id}?section=locations`;
+    searchResults.innerHTML = '';
+    if (Array.isArray(data) && data.length > 0) {
+        data.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'search-result-item';
 
-                                                                   
-                                    }else if (item.id) {
-                                       window.location.href = `/artist/${item.id}`;
-                                   } else {
-                                       console.error('Artist ID not found for', item.name);
-                                       alert('Sorry, unable to find details for this artist.');
-                                   }
-                               });
-                               searchResults.appendChild(div);
-                           });
-                           searchResults.style.display = 'block';
-                       } else {
-                           console.log('No results found or data is not an array');
-                           searchResults.innerHTML = '<div class="search-result-item">No results found</div>';
-                           searchResults.style.display = 'block';
-                       }
-                   })
+            // Display artist/band name with relevant date or location
+            if (item.type === 'artist/band') {
+                div.textContent = `${item.name} - ${item.type}`;
+            } else if (item.type === 'member') {
+                div.textContent = `${item.name} - ${item.type} - ${item.bandName}`;
+            } else if (item.type === 'location') {
+                div.textContent = `${item.name} - ${item.type} - ${item.bandName}`;
+            } else if (item.type === 'dates') {
+                div.textContent = `${item.name} - ${item.type} - ${item.band}`;
+            }
+
+            // Redirect on click
+            div.addEventListener('click', () => {
+                if (item.id) {
+                    if (item.type === 'location') {
+                        window.location.href = `/artist/${item.id}?section=locations`;
+                    } else if (item.type === 'dates') {
+                        window.location.href = `/artist/${item.id}?section=dates`;
+                    } else {
+                        window.location.href = `/artist/${item.id}`;
+                    }
+                } else {
+                    alert('Sorry, unable to find details for this artist.');
+                }
+            });
+
+            searchResults.appendChild(div);
+        });
+        searchResults.style.display = 'block';
+    } else {
+        searchResults.innerHTML = '<div class="search-result-item">No results found</div>';
+        searchResults.style.display = 'block';
+    }
+})
+
                    .catch(error => {
                        console.error('Fetch error:', error);
                        searchResults.innerHTML = '<div class="search-result-item">Error fetching results</div>';
