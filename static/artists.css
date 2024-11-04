@@ -4,9 +4,9 @@
     font-weight: normal;
     font-style: normal;
 }
+
 body {
     background-image: url(/static/images/artist2.jpeg);
-    background-color: #1d2c25;
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -16,6 +16,7 @@ body {
     min-height: 100vh;
     font-family: Arial, sans-serif;
 }
+
 body::before {
     content: "";
     position: fixed;
@@ -23,9 +24,9 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Adjust opacity as needed */
     z-index: -1;
 }
+
 .artists-title, #search-container, .artists-container {
     position: relative;
     z-index: 1;
@@ -84,135 +85,67 @@ header {
     z-index: -2;
 }
 
-@media (max-width: 768px) {
-    .artists-title {
-        font-size: 60px;
-    }
-    
-    .artists-title::before {
-        top: 3px;
-    }
-    
-    .artists-title::after {
-        top: 6px;
-    }
-    
-    .artists-title-bg {
-        height: 15px;
-    }
-}
-
-
-/* Header styling to align title and search bar */
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-}
-
-
-
-#search-results {
-    position: absolute;
-    top: 100%; 
-    left: 0;
-    width: 100%;
-    max-height: 300px; 
-    overflow-y: auto; 
-    background-color: gray;
-    border: 1px solid #1f1e1e;
-    border-radius: 4px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-}
-
 /* Search Styles */
 #search-container {
     position: relative;
-    max-width: 300px;
-    margin: 30px auto;
-}
-#search-input {
-    width: 80%;
     max-width: 400px;
-    padding: 10px;
+    margin: 30px auto;
+    z-index: 1000;
+}
+
+#search-input {
+    width: 100%;
+    padding: 12px 20px;
     font-size: 16px;
     border: 2px solid #1b8e29;
     border-radius: 25px;
-    background-color: #2a2a2a;
+    background-color: rgba(46, 46, 46, 0.8);
     color: #fff;
-    outline: none; /* Remove default outline */
-    transition: box-shadow 0.3s ease; 
+    transition: all 0.3s ease;
 }
 
 #search-input::placeholder {
     color: #aaa;
 }
 
-
-
-/* Search bar styling */
-
-.search-bar {
-    padding: 8px 12px;
-    border-radius: 20px;
-}
-
-.search-bar::placeholder {
-    color: #888;
-}
-
-/* Focus effect */
 #search-input:focus {
-    box-shadow: 0 0 0 2px white; /* Add white outline when focused */
-    border-color: white; /* Change border color to white when focused */
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(27, 142, 41, 0.5);
+    background-color: rgba(46, 46, 46, 0.95);
 }
 
-/* Search Results */
-#search-results,
-.suggestions-list {
+#search-results {
     position: absolute;
     top: 100%;
     left: 0;
     width: 100%;
-    background-color: gray;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: none;
-}
-
-#search-results {
     max-height: 300px;
     overflow-y: auto;
+    background-color: rgba(46, 46, 46, 0.95);
+
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
 }
 
-.search-result-item,
-.suggestion-item {
-    padding: 10px;
+.search-result-item {
+    padding: 10px 20px;
     font-size: 14px;
     color: white;
     cursor: pointer;
     transition: background-color 0.2s;
 }
 
-.search-result-item:hover,
-.suggestion-item:hover {
-    background-color: green;
-}
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px;
-    box-sizing: border-box;
+.search-result-item:hover {
+    background-color: #1b8e29;
 }
 
+/* Artists Container */
 .artists-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Reduced from 250px to 200px */
-    gap: 30px; /* Reduced from 40px to 30px */
-    padding: 20px 40px; /* Added horizontal padding */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+    padding: 20px 40px;
 }
 
 .artist-card {
@@ -222,32 +155,17 @@ header {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     position: relative;
-    max-width: 200px; /* Added max-width to limit card size */
-    margin: 0 auto; /* Center the card if it's smaller than the grid cell */
+    max-width: 250px;
+    margin: 0 auto;
 }
+
 .artist-card:hover {
     transform: translateY(-5px) scale(1.05);
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
-.artist-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to bottom, rgba(27, 142, 41, 0), rgba(27, 142, 41, 0.2));
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.artist-card:hover::after {
-    opacity: 1;
-}
-
 .artist-image {
-    height: 200px;
+    height: 250px;
     overflow: hidden;
 }
 
@@ -276,10 +194,6 @@ header {
     text-align: center;
     color: #fff;
     font-weight: 600;
-    text-decoration: none;
-    background: none;
-    -webkit-background-clip: initial;
-    -webkit-text-fill-color: initial;
     transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
@@ -298,40 +212,42 @@ header {
     }
 }
 
-.artist-card a {
-    text-decoration: none;
-}
+/* Dropdown Styles */
 .dropdown {
     position: fixed;
     top: 20px;
     right: 20px;
+    z-index: 1000;
 }
 
 .dropdown button {
-    background-color: #2a2a2a;
+    background-color: #1b8e29;
     color: #fff;
     border: none;
     padding: 12px 20px;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 25px;
     font-size: 14px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .dropdown button:hover {
-    background-color: #3a3a3a;
+    background-color: #156f20;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #2a2a2a;
+    background-color: rgba(46, 46, 46, 0.95);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     padding: 12px 16px;
-    z-index: 1;
+    z-index: 1001;
     right: 0;
     border-radius: 5px;
     min-width: 200px;
+    border: 1px solid #1b8e29;
 }
 
 .dropdown:hover .dropdown-content {
@@ -343,6 +259,7 @@ header {
     color: #fff;
     font-size: 14px;
 }
+
 /* Responsive Design */
 @media (max-width: 1240px) {
     .container {
@@ -354,17 +271,77 @@ header {
 }
 
 @media (max-width: 768px) {
+    .artists-title {
+        font-size: 60px;
+    }
+    
+    .artists-title::before {
+        top: 3px;
+    }
+    
+    .artists-title::after {
+        top: 6px;
+    }
+    
+    .artists-title-bg {
+        height: 15px;
+    }
+
     .container {
         padding: 20px 10px;
     }
+
     .artists-container {
-        padding: 20px 20px;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Further reduced for smaller screens */
+        padding: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
+
     .artist-card {
         max-width: 150px;
     }
+
     .artist-image {
         height: 150px;
+    }
+
+    #search-container {
+        max-width: 90%;
+    }
+
+    #search-input {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .artists-title {
+        font-size: 40px;
+    }
+
+    .artists-container {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+
+    .artist-card {
+        max-width: 120px;
+    }
+
+    .artist-image {
+        height: 120px;
+    }
+
+    .artist-info h2 {
+        font-size: 16px;
+    }
+
+    .dropdown {
+        top: 10px;
+        right: 10px;
+    }
+
+    .dropdown button {
+        padding: 8px 12px;
+        font-size: 12px;
     }
 }
