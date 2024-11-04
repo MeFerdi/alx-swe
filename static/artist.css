@@ -1,5 +1,9 @@
 body {
     background-color: #121212;
+    background-image: url(/static/images/artist2.jpeg);
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
     color: #ffffff;
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -36,13 +40,7 @@ body {
     margin-bottom: 30px;
 }
 
-h2, h3, h4 {
-    font-size: 28px;
-    background: linear-gradient(90deg, #2ec421, #1b8e29);
-    --webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 15px;
-}
+
 
 .members-list, .dates-list, .location-list {
     list-style-type: none;
