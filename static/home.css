@@ -104,10 +104,9 @@ body, html {
 }
 
 .typewriter {
-  font-family: 'Arial', sans-serif;
-
+    font-family: 'Arial', sans-serif;
     overflow: hidden;
-    border-right: .15em solid #fff;
+    border-right: .15em solid transparent; /* Start with a transparent border */
     white-space: nowrap;
     margin: 0 auto;
     letter-spacing: .15em;
@@ -115,7 +114,8 @@ body, html {
     font-size: 24px;
     color: #fff;
     margin-bottom: 30px;
-    width: 0;
+    width: 0; /* Start with zero width */
+    opacity: 0; /* Start fully transparent */
     animation: 
         typing 2s steps(20, end) forwards,
         blink-caret .5s step-end infinite;
@@ -137,14 +137,21 @@ body, html {
 }
 
 @keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
+    from { 
+        width: 0;
+        opacity: 1; /* Fade in as typing starts */
+    }
+    to { 
+        width: 100%;
+        opacity: 1;
+    }
 }
 
 @keyframes blink-caret {
     from, to { border-color: transparent }
     50% { border-color: #fff; }
 }
+
 
 @keyframes fadeIn {
     to {
@@ -182,7 +189,18 @@ body, html {
         white-space: normal;
         max-width: 90%;
         line-height: 1.2;
-        border-right: 0.1em solid #fff;
+        border-right: none;
+        position: relative;
+    }
+    .typewriter::after {
+        content: '';
+        position: absolute;
+        right: -4px;
+        top: 0;
+        height: 1.2em;
+        width: 2px;
+        background-color: #fff;
+        animation: blink-caret .5s step-end infinite;
     }
 
     .hero-content {
@@ -198,11 +216,25 @@ body, html {
 
 @media (min-width: 601px) and (max-width: 1024px) {
     .typewriter {
-        font-size: 2.5vw;
-        white-space: normal; /* Allows text wrapping */
-        max-width: 80%; 
+        font-size: 3.5vw;
+        white-space: normal;
+        max-width: 90%;
         line-height: 1.2;
-        border-right: 0.12em solid #fff;
+        border-right: none;
+        position: relative;
+    }
+    .typewriter::after {
+        content: '';
+        position: absolute;
+        right: -4px;
+        top: 0;
+        height: 1.2em;
+        width: 2px;
+        background-color: transparent; /* Start transparent */
+        animation: 
+            blink-caret .5s step-end infinite,
+            delay-appear 2s steps(1, end) forwards;
+        animation-delay: 2s, 2s; /* Delay both animations */
     }
 }
 
@@ -217,3 +249,10 @@ body, html {
         border-right: .15em solid #fff;
     }
 }
+@keyframes delay-appear {
+    to {
+        background-color: #fff;
+    }
+}
+
+
