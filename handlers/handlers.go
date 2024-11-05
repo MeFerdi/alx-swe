@@ -179,7 +179,7 @@ func searchArtists(artists []Artist, locations []Location, query string) []map[s
 			results = append(results, map[string]string{
 				"name": artist.FirstAlbum,
 				"band": artist.Name, // Include artist name with album date
-				"type": "dates",
+				"type": "firstAlbum dates",
 				"id":   strconv.Itoa(artist.ID),
 			})
 		}
@@ -188,7 +188,7 @@ func searchArtists(artists []Artist, locations []Location, query string) []map[s
 			results = append(results, map[string]string{
 				"name": strconv.Itoa(artist.CreationDate),
 				"band": artist.Name, // Include artist name with creation date
-				"type": "dates",
+				"type": "Creation dates",
 				"id":   strconv.Itoa(artist.ID),
 			})
 		}
