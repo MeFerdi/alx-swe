@@ -7,6 +7,9 @@
     <link rel="stylesheet" type="text/css" href="/static/artists.css" />
 </head>
 <body>
+    <div class="home-container">
+        <button class="home-button" onclick="goHome()">Home</button>
+    </div>
    <header>
     <h1 class="artists-title">Artists</h1>
     <div class="artists-title-bg"></div>
@@ -45,5 +48,10 @@
     </div>
    
    <script src="/static/js/artistSearch.js"></script>
+   <script>
+    function goHome() {
+        window.location.href = '/'; // Redirect to the home page
+    }
+    </script>
 </body>
 </html>

@@ -7,6 +7,9 @@
     <link rel="stylesheet" type="text/css" href="/static/artist.css" />
 </head>
 <body>
+    <div class="home-container">
+        <button class="home-button" onclick="goHome()">Home</button>
+    </div>
     <div class="container">
         <div class="dropdown">
             <button>Shortcuts</button>
@@ -14,7 +17,7 @@
                 <div class="shortcut-item">Alt + ← : Go Back</div>
                 <div class="shortcut-item">Alt + → : Go Forward</div>
                 <div class="shortcut-item">Alt + L : View Locations</div>
-                <div class="shortcut-item">Alt + D : View Datess</div>
+                <div class="shortcut-item">Alt + D : View Dates</div>
                 <div class="shortcut-item">Alt + R : View Relations</div>
             </div>
         </div>
@@ -39,7 +42,7 @@
                     N/A
                     {{end}}
                 </p>
-            
+
                 <p><strong></strong>
                     {{if .Dates.Dates}}
                     <a href="?section=dates">View Dates</a>
@@ -47,7 +50,7 @@
                     N/A
                     {{end}}
                 </p>
-            
+
                 <p><strong></strong>
                     {{if .Relations.Locations}}
                     <a href="?section=relations">View Relations</a>
@@ -55,7 +58,7 @@
                     N/A
                     {{end}}
                 </p>
-            
+
                 <p><strong></strong>
                     <a href="?section=all">View All</a>
                 </p>
@@ -64,6 +67,8 @@
                 <button class="back-button" onclick="history.back()">← Back</button>
             </div>
         </div>
+
+        <!-- Sections for locations, dates, and relations -->
         <section id="locations" class="hidden">
             <h3>Location Details</h3>
             <div class="relation-card">
@@ -76,6 +81,7 @@
                 </ul>
             </div>
         </section>
+
         <section id="dates" class="hidden">
             <h3>Concert Dates</h3>
             <div class="relation-card">
@@ -86,6 +92,7 @@
                 </ul>
             </div>
         </section>
+
         <section id="relations" class="hidden">
             <h3>Relations</h3>
             {{if .Relations.Locations}}
@@ -108,7 +115,16 @@
                 </div>
             {{end}}
         </section>
+
     </div>
+
+    <!-- JavaScript files -->
     <script src="/static/js/showSection.js"></script>
+    <script>
+    function goHome() {
+        window.location.href = '/'; // Redirect to the home page
+    }
+    </script>
+
 </body>
 </html>
