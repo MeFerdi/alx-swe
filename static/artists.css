@@ -225,6 +225,30 @@ header {
     right: 20px;
     z-index: 1000;
 }
+/* Home Button Styles */
+.home-container {
+   position: fixed; /* Fixed position on the page */
+   top: 20px; /* Top spacing */
+   left: 20px; /* Left spacing */
+   z-index: 1000; /* Above other elements */
+}
+
+.home-button {
+   background-color: #1b8e29; /* Same as dropdown buttons */
+   color: #fff; /* White text color */
+   border: none; /* No border */
+   padding: 12px 20px; /* Same padding as dropdown buttons */
+   cursor: pointer; /* Pointer cursor on hover */
+   border-radius: 25px; /* Rounded corners */
+   font-size: 14px; /* Font size */
+   transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Transition effects */
+   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow effect */
+}
+
+.home-button:hover {
+   background-color: #156f20; /* Darker shade on hover */
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
 
 .dropdown button {
     background-color: #1b8e29;
@@ -254,6 +278,10 @@ header {
     border-radius: 5px;
     min-width: 200px;
     border: 1px solid #1b8e29;
+}
+
+.container {
+    position: relative;
 }
 
 .dropdown:hover .dropdown-content {
