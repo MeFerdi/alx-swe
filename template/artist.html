@@ -5,39 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.Artist.Name}} - Artist Details</title>
     <link rel="stylesheet" type="text/css" href="/static/artist.css" />
-    <link rel="stylesheet" type="text/css" href="/static/shortcut.css" />
-    
-    <style>
-        .dropdown {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #12201c5b;
-            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-            padding: 12px 16px;
-            z-index: 1;
-            right: 0;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .shortcut-item {
-            margin-bottom: 8px;
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
 </head>
 <body>
+    <div class="home-container">
+        <button class="home-button" onclick="goHome()">Home</button>
+    </div>
     <div class="container">
         <div class="dropdown">
             <button>Shortcuts</button>
@@ -45,16 +17,14 @@
                 <div class="shortcut-item">Alt + ← : Go Back</div>
                 <div class="shortcut-item">Alt + → : Go Forward</div>
                 <div class="shortcut-item">Alt + L : View Locations</div>
-                <div class="shortcut-item">Alt + D : View Datess</div>
+                <div class="shortcut-item">Alt + D : View Dates</div>
                 <div class="shortcut-item">Alt + R : View Relations</div>
             </div>
         </div>
-
         <div class="artist-header">
             <img src="{{.Artist.Image}}" alt="{{.Artist.Name}} Image" class="artist-image">
             <h2>{{.Artist.Name}}</h2>
         </div>
-
         <div class="artist-details">
             <p><strong>Members:</strong></p>
             <ul class="members-list">
@@ -64,7 +34,6 @@
             </ul>
             <p><strong>Creation Date:</strong> {{.Artist.CreationDate}}</p>
             <p><strong>First Album:</strong> {{.Artist.FirstAlbum}}</p>
-
             <div class="links">
                 <p><strong></strong>
                     {{if .Locations.Locations}}
@@ -73,7 +42,7 @@
                     N/A
                     {{end}}
                 </p>
-            
+
                 <p><strong></strong>
                     {{if .Dates.Dates}}
                     <a href="?section=dates">View Dates</a>
@@ -81,7 +50,7 @@
                     N/A
                     {{end}}
                 </p>
-            
+
                 <p><strong></strong>
                     {{if .Relations.Locations}}
                     <a href="?section=relations">View Relations</a>
@@ -89,17 +58,17 @@
                     N/A
                     {{end}}
                 </p>
-            
+
                 <p><strong></strong>
                     <a href="?section=all">View All</a>
                 </p>
             </div>
-
             <div class="back-button-container">
                 <button class="back-button" onclick="history.back()">← Back</button>
             </div>
         </div>
 
+        <!-- Sections for locations, dates, and relations -->
         <section id="locations" class="hidden">
             <h3>Location Details</h3>
             <div class="relation-card">
@@ -146,82 +115,16 @@
                 </div>
             {{end}}
         </section>
+
     </div>
 
+    <!-- JavaScript files -->
+    <script src="/script/js/showSection.js"></script>
     <script>
-        function showSection(sectionId, updateUrl = true) {
-            const sections = document.querySelectorAll('section');
-            sections.forEach(section => {
-                if (section.id === sectionId || sectionId === 'all') {
-                    section.classList.remove('hidden');
-                } else {
-                    section.classList.add('hidden');
-                }
-            });
-    
-            if (updateUrl) {
-                // Update URL without adding to browser history
-                const url = new URL(window.location);
-                url.searchParams.set('section', sectionId);
-                window.history.replaceState({}, '', url);
-            }
-    
-            // Smooth scroll to the section
-            if (sectionId !== 'all') {
-                const targetSection = document.getElementById(sectionId);
-                if (targetSection) {
-                    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }
-        }
-    
-        function handleUrlParams() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const section = urlParams.get('section') || 'all';
-            showSection(section, false);
-        }
-    
-        // Call handleUrlParams on page load
-        handleUrlParams();
-    
-        // Listen for popstate events (browser back/forward)
-        window.addEventListener('popstate', handleUrlParams);
-    
-        // Update event listeners
-        document.addEventListener('keydown', function(event) {
-            if (event.altKey) {
-                event.preventDefault(); // Prevent default browser behavior for Alt key combinations
-                switch (event.key.toLowerCase()) {
-                    case 'arrowleft':
-                        history.back();
-                        break;
-                    case 'arrowright':
-                        history.forward();
-                        break;
-                    case 'l':
-                        showSection('locations');
-                        break;
-                    case 'd':
-                        showSection('dates');
-                        break;
-                    case 'r':
-                        showSection('relations');
-                        break;
-                    case 'a':
-                        showSection('all');
-                        break;
-                }
-            }
-        });
-    
-        // Prevent default anchor behavior and use showSection instead
-        document.querySelectorAll('.links a').forEach(link => {
-            link.addEventListener('click', function(event) {
-                event.preventDefault();
-                const section = this.getAttribute('href').split('=')[1];
-                showSection(section);
-            });
-        });
+    function goHome() {
+        window.location.href = '/'; // Redirect to the home page
+    }
     </script>
+
 </body>
 </html>

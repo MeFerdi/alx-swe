@@ -1,9 +1,12 @@
 package api
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"text/template"
 )
@@ -41,6 +44,13 @@ Parameters:
   - status: HTTP status code for the error
   - message: Error message to display
 */
+type SearchResult struct {
+	Name string `json:"name"`
+	Type string `json:"type"`
+}
+
+// SearchHandler handles search requests for "first album" and "creation date
+
 func renderError(w http.ResponseWriter, status int, message string) {
 	Init()
 	w.WriteHeader(status)
@@ -102,8 +112,8 @@ Parameters:
   - r: *http.Request containing the request details
 */
 func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/artists/" {
-		renderError(w, http.StatusNotFound, "The Page you're trying to acess is unavailable")
+	if r.URL.Path != "/artists" && r.URL.Path != "/artists/" {
+		renderError(w, http.StatusNotFound, "The Page you're trying to access is unavailable")
 		return
 	}
 
@@ -112,16 +122,36 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Fetch all artists
+	result, err := ReadArtists("https://groupietrackers.herokuapp.com/api/artists")
+	if err != nil {
+		renderError(w, http.StatusInternalServerError, "Error fetching artists")
+		return
+	}
+
+	// Fetch locations
+	locations, err := fetchLocations("https://groupietrackers.herokuapp.com/api/locations")
+	if err != nil {
+		renderError(w, http.StatusInternalServerError, "Error fetching locations")
+		fmt.Println(err)
+		return
+	}
+
+	// Check if it's a search request
+	query := r.URL.Query().Get("q")
+	if query != "" {
+		// Perform search
+		searchResults := searchArtists(result, locations, query)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(searchResults)
+		return
+	}
+
+	// If not a search request, render the full artists page
 	templatePath := filepath.Join("template", "artists.html")
 	temp1, err := template.ParseFiles(templatePath)
 	if err != nil {
 		renderError(w, http.StatusInternalServerError, "Error loading template")
-		return
-	}
-
-	result, err := ReadArtists("https://groupietrackers.herokuapp.com/api/artists")
-	if err != nil {
-		renderError(w, http.StatusInternalServerError, "Error fetching artists")
 		return
 	}
 
@@ -131,12 +161,100 @@ func ArtistsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func searchArtists(artists []Artist, locations []Location, query string) []map[string]string {
+	var results []map[string]string
+	query = strings.ToLower(query)
+
+	for _, artist := range artists {
+		// Search artist name
+		if strings.Contains(strings.ToLower(artist.Name), query) {
+			results = append(results, map[string]string{
+				"name": artist.Name,
+				"type": "artist/band",
+				"id":   strconv.Itoa(artist.ID),
+			})
+		}
+		// Search for Album date
+		if strings.Contains(strings.ToLower(artist.FirstAlbum), query) {
+			results = append(results, map[string]string{
+				"name": artist.FirstAlbum,
+				"band": artist.Name, // Include artist name with album date
+				"type": "firstAlbum dates",
+				"id":   strconv.Itoa(artist.ID),
+			})
+		}
+		// Search for Creation Dates
+		if strings.Contains(strings.ToLower(strconv.Itoa(artist.CreationDate)), query) {
+			results = append(results, map[string]string{
+				"name": strconv.Itoa(artist.CreationDate),
+				"band": artist.Name, // Include artist name with creation date
+				"type": "Creation dates",
+				"id":   strconv.Itoa(artist.ID),
+			})
+		}
+		// Search members
+		for _, member := range artist.Members {
+			if strings.Contains(strings.ToLower(member), query) {
+				results = append(results, map[string]string{
+					"name":     member,
+					"type":     "member",
+					"bandName": artist.Name,
+					"id":       strconv.Itoa(artist.ID),
+				})
+			}
+		}
+
+		// Search locations
+		for _, location := range locations {
+			if int64(artist.ID) == location.ID {
+				for _, loc := range location.Locations {
+					if strings.Contains(strings.ToLower(loc), query) {
+						results = append(results, map[string]string{
+							"name":     loc,
+							"type":     "location",
+							"bandName": artist.Name,
+							"id":       strconv.Itoa(artist.ID),
+						})
+					}
+				}
+				break
+			}
+		}
+	}
+
+	return results
+}
+
+func fetchLocations(baseURL string) ([]Location, error) {
+	response, err := http.Get(baseURL)
+	if err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("API returned status code: %d", response.StatusCode)
+	}
+
+	var locationResponse struct {
+		Index []Location `json:"index"`
+	}
+	err = json.NewDecoder(response.Body).Decode(&locationResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	return locationResponse.Index, nil
+}
+
 type ArtistData struct {
-	Artist    Artist    `json:"artist"`
-	Dates     DateEntry `json:"dates"`
-	Locations Location  `json:"locations"`
-	Relations Relation  `json:"relations"`
-	Section   string    `json:"section"`
+	Artist       Artist    `json:"artist"`
+	Dates        DateEntry `json:"dates"`
+	Locations    Location  `json:"locations"`
+	Relations    Relation  `json:"relations"`
+	Section      string    `json:"section"`
+	CreationDate int       `json:"creationDate"`
+	ConcertDates string    `json:"concertDates"`
 }
 
 func ArtistHandler(w http.ResponseWriter, r *http.Request) {

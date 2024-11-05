@@ -1,144 +1,258 @@
-body {
-    font-family: 'Roboto', sans-serif;
-    color: #ffffff;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    background-image: url('/static/images/background.jpg');
-    background-color: #1a1a1a;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    text-align: center;
+@font-face {
+    font-family: 'Rockville Solid Regular';
+    src: url('/static/fonts/Rockville Solid.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
-.background-overlay {
-    position: fixed;
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.hero-area {
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-slides {
+    height: 100%;
+    position: relative;
+}
+
+.single-hero-slide {
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: -1;
-}
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-    position: relative;
-    z-index: 1;
-}
-
-header {
-    margin-bottom: 3rem;
-}
-
-h1 {
-    font-size: 4rem;
-    margin-bottom: 0.5rem;
-    color: #1db954;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    letter-spacing: 2px;
-}
-
-.tagline {
-    font-size: 1.4rem;
-    color: #b3b3b3;
-    font-weight: 300;
-}
-
-main {
+    opacity: 1; /* Start fully opaque */
+    transition: opacity 1s ease-in-out;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
 
-.description {
-    background-color: rgba(40, 40, 40, 0.8);
-    border-radius: 15px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.single-hero-slide:not(.active) {
+    opacity: 0; /* Hide non-active slides */
 }
 
-h2 {
-    color: #1db954;
-    margin-top: 0;
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+.single-hero-slide.active {
+    z-index: 2; /* Ensure active slide is on top */
 }
 
-p {
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
+.single-hero-slide.fade-out {
+    opacity: 0;
 }
 
-ul {
-    list-style-type: none;
-    padding-left: 0;
-    margin-bottom: 1rem;
-}
-
-li {
-    margin-bottom: 0.5rem;
-    font-size: 1.1rem;
-}
-
-li::before {
-    content: "•";
-    color: #1db954;
-    display: inline-block;
-    width: 1em;
-    margin-right: 0.5em;
-}
-
-.view-artists-button {
-    background-color: #1db954;
-    color: #ffffff;
-    border: none;
-    padding: 1rem 2rem;
-    font-size: 1.2rem;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: bold;
-}
-
-.view-artists-button:hover {
-    background-color: #1ed760;
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-footer {
-    margin-top: 3rem;
-    color: #b3b3b3;
-    font-size: 0.9rem;
-}
-
-.dropdown {
+.slide-img {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    animation: imageZoom 12s ease-in-out infinite;
 }
 
-.dropdown-content {
-    display: none;
+@keyframes imageZoom {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+/* ... (previous CSS remains the same) ... */
+
+.slide-img::after {
+    content: '';
     position: absolute;
-    background-color: #12201c5b;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    padding: 12px 16px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Increased opacity from 0.5 to 0.6 (60% dim) */
+}
+
+/* ... (rest of the CSS remains the same) ... */
+
+.hero-content {
+    position: relative;
+    text-align: center;
+    color: #fff;
     z-index: 1;
-    right: 0;
+    max-width: 90%;
+    margin: 0 auto;
 }
 
-.dropdown:hover .dropdown-content {
-    display: block;
+.hero-content h2 {
+    font-size: 90px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #1b8e29;
+    text-transform: uppercase;
+    letter-spacing: 10px;
+    line-height: 1;
+    font-family: 'Rockville Solid Regular', sans-serif;
+    opacity: 0;
+    animation: fadeIn 3s ease-out forwards;
+    animation-delay: 0.5s;
 }
 
-.shortcut-item {
-    margin-bottom: 8px;
+.typewriter {
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+    border-right: .15em solid transparent; /* Start with a transparent border */
+    white-space: nowrap;
+    margin: 0 auto;
+    letter-spacing: .15em;
+    max-width: 100%;
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 30px;
+    width: 0; /* Start with zero width */
+    opacity: 0; /* Start fully transparent */
+    animation: 
+        typing 2s steps(20, end) forwards,
+        blink-caret .5s step-end infinite;
+    animation-delay: 2s;
 }
+
+.hero-content .btn {
+  font-family: 'Arial', sans-serif;
+
+  display: inline-block;
+  padding: 12px 30px;
+  background-color: #fff;
+  color: #000;
+  text-decoration: none;
+  font-weight: 600;
+  opacity: 0;
+  animation: fadeInUp 2s ease-out forwards; /* Changed duration to 2s and added ease-out */
+  animation-delay: 3.5s;
+}
+
+@keyframes typing {
+    from { 
+        width: 0;
+        opacity: 1; /* Fade in as typing starts */
+    }
+    to { 
+        width: 100%;
+        opacity: 1;
+    }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: #fff; }
+}
+
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+  0% {
+      opacity: 0;
+      transform: translateY(20px);
+  }
+  100% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+@keyframes imageZoom {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@media (max-width: 600px) {
+    .text-main {
+        font-size: 1.5rem;
+    }
+
+    .typewriter {
+        font-size: 3.5vw;
+        white-space: normal;
+        max-width: 90%;
+        line-height: 1.2;
+        border-right: none;
+        position: relative;
+    }
+    .typewriter::after {
+        content: '';
+        position: absolute;
+        right: -4px;
+        top: 0;
+        height: 1.2em;
+        width: 2px;
+        background-color: #fff;
+        animation: blink-caret .5s step-end infinite;
+    }
+
+    .hero-content {
+        padding: 5px;
+        width: 90%;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+    .typewriter {
+        font-size: 3.5vw;
+        white-space: normal;
+        max-width: 90%;
+        line-height: 1.2;
+        border-right: none;
+        position: relative;
+    }
+    .typewriter::after {
+        content: '';
+        position: absolute;
+        right: -4px;
+        top: 0;
+        height: 1.2em;
+        width: 2px;
+        background-color: transparent; /* Start transparent */
+        animation: 
+            blink-caret .5s step-end infinite,
+            delay-appear 2s steps(1, end) forwards;
+        animation-delay: 2s, 2s; /* Delay both animations */
+    }
+}
+
+@media (min-width: 1025px) {
+    .text-main {
+        font-size: 2.5rem;
+    }
+
+    .typewriter {
+        font-size: 1.2rem;
+        white-space: nowrap;
+        border-right: .15em solid #fff;
+    }
+}
+@keyframes delay-appear {
+    to {
+        background-color: #fff;
+    }
+}
+
+
