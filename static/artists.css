@@ -6,7 +6,8 @@
 }
 
 body {
-    background-image: url(/static/images/artist2.jpeg);
+    background-color: #1e1e1e;
+    background-image: url(/static/images/a12.jpg);
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -153,7 +154,7 @@ header {
     border-radius: 10px;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px #1b8e29;
     position: relative;
     max-width: 250px;
     margin: 0 auto;
@@ -161,7 +162,7 @@ header {
 
 .artist-card:hover {
     transform: translateY(-5px) scale(1.05);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 20px rgba(99, 96, 96, 0.2);
 }
 
 .artist-image {
@@ -186,6 +187,11 @@ header {
     padding: 20px;
     position: relative;
     z-index: 1;
+}
+
+.artist-card a {
+    text-decoration: none;
+    color: inherit;
 }
 
 .artist-info h2 {
