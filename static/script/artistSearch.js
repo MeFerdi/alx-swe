@@ -1,6 +1,3 @@
-function goHome() {
-    window.location.href = '/'; // Redirect to the home page
-}
 
 const searchInput = document.getElementById('search-input');
 const searchResults = document.getElementById('search-results');
@@ -34,9 +31,9 @@ searchInput.addEventListener('input', function() {
                             div.textContent = `${item.name} - ${item.type} - ${item.bandName}`;
                         } else if (item.type === 'location') {
                             div.textContent = `${item.name} - ${item.type} - ${item.bandName}`;
-                        }else if (item.type === 'firstAlbum dates') {
+                        }else if (item.type === 'first album dates') {
                             div.textContent = `${item.name} - ${item.type} - ${item.band}`;
-                        }else if (item.type === 'Creation dates') {
+                        }else if (item.type === 'creation dates') {
                             div.textContent = `${item.name} - ${item.type} - ${item.band}`;
                         }
                         // Redirect on click
@@ -44,9 +41,9 @@ searchInput.addEventListener('input', function() {
                             if (item.id) {
                                 if (item.type === 'location') {
                                     window.location.href = `/artist/${item.id}?section=locations`;
-                                }else if (item.type === 'firstAlbumdates') {
+                                }else if (item.type === 'first album dates') {
                                     window.location.href = `/artist/${item.id}?section=dates`;
-                                 } else if (item.type === 'Creationdates') {
+                                 } else if (item.type === 'creation dates') {
                                     window.location.href = `/artist/${item.id}?section=dates`;
                                  }else {
                                     window.location.href = `/artist/${item.id}`;

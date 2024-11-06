@@ -5,6 +5,12 @@
     font-style: normal;
 }
 
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+}
+
 body {
     background-color: #1e1e1e;
     background-image: url(/static/images/a12.jpg);
@@ -16,6 +22,7 @@ body {
     padding: 0;
     min-height: 100vh;
     font-family: Arial, sans-serif;
+    overflow-x: hidden;
 }
 
 body::before {
@@ -38,6 +45,7 @@ header {
     text-align: center;
     margin-bottom: 40px;
 }
+
 
 .artists-title {
     font-family: 'Rockville Solid Regular', Arial, sans-serif;
@@ -89,9 +97,12 @@ header {
 /* Search Styles */
 #search-container {
     position: relative;
-    max-width: 400px;
+    max-width: 90%;
+    width: 400px;
     margin: 30px auto;
     z-index: 1000;
+    padding: 0 15px;
+    box-sizing: border-box;
 }
 
 #search-input {
@@ -103,6 +114,7 @@ header {
     background-color: rgba(46, 46, 46, 0.8);
     color: #fff;
     transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
 #search-input::placeholder {
@@ -123,7 +135,6 @@ header {
     max-height: 300px;
     overflow-y: auto;
     background-color: rgba(46, 46, 46, 0.95);
-
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
@@ -141,12 +152,40 @@ header {
     background-color: #1b8e29;
 }
 
+/* Responsive adjustments for search */
+@media (max-width: 480px) {
+    #search-container {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+
+    #search-input {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+}
+
 /* Artists Container */
 .artists-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 30px;
-    padding: 20px 40px;
+    padding: 20px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .artists-container {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .artists-container {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        padding: 10px;
+    }
 }
 
 .artist-card {
@@ -218,92 +257,63 @@ header {
     }
 }
 
-/* Dropdown Styles */
-.dropdown {
+/* Button Styles */
+.home-container, .dropdown {
     position: fixed;
     top: 20px;
-    right: 20px;
     z-index: 1000;
 }
-/* Home Button Styles */
+
 .home-container {
-    position: fixed; /* Fixed position on the page */
-    top: 20px; /* Top spacing */
-    left: 20px; /* Left spacing */
-    z-index: 1000; /* Above other elements */
- }
- 
- .home-button {
-    background-color: #1b8e29; /* Same as dropdown buttons */
-    color: #fff; /* White text color */
-    border: none; /* No border */
-    padding: 12px 20px; /* Same padding as dropdown buttons */
-    cursor: pointer; /* Pointer cursor on hover */
-    border-radius: 25px; /* Rounded corners */
-    font-size: 14px; /* Font size */
-    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Transition effects */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow effect */
- }
- 
- .home-button:hover {
-    background-color: #156f20; /* Darker shade on hover */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
- }
- 
- /* Dropdown Menu Styles */
- .dropdown {
-    position: fixed; 
-    top: 20px; 
-    right: 20px; 
-    z-index: 1000; 
- }
- 
- .dropdown button {
-    background-color: #1b8e29; 
-    color:#fff; 
-    border:none; 
-    padding :12px 20px; /* Match home button padding */
-    cursor:pointer ; 
-    border-radius :25px ; /* Match home button border radius */
-    font-size :14px ; /* Match home button font size */
-    transition :background-color .3s ease , box-shadow .3s ease ;
-    box-shadow :0 2px 5px rgba(0, 0, 0, 0.2); /* Match shadow effect */
- }
- 
- .dropdown button:hover {
-    background-color :#156f20 ;
-    box-shadow :0 4px 8px rgba(0, 0, 0, 0.3); /* Match hover effect */
- }
- 
- .dropdown-content {
-    display:none ; 
-    position:absolute ; 
-    background-color :rgba(46 ,46 ,46 ,0.95) ; 
-    box-shadow :0 px ,8 px ,16 px ,rgba(0 ,0 ,0 ,0.2) ; 
-    padding :12 px ,16 px ; 
-    z-index :1001 ; 
-    right :0 ; 
-    border-radius :5 px ; 
-    min-width :200 px ; 
-    border :1 px solid #1b8e29 ;
- }
- 
- .dropdown:hover .dropdown-content {
-  display:block ;
- }
- 
- .shortcut-item {
-  margin-bottom :10 px ;
-  color:#fff ;
-  font-size :14 px ;
- }
- 
+    left: 20px;
+}
+
+.dropdown {
+    right: 20px;
+}
+
+.home-button, .dropdown-button {
+    background-color: #1b8e29;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 25px;
+    font-size: 14px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.home-button:hover, .dropdown-button:hover {
+    background-color: #156f20;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: rgba(46, 46, 46, 0.95);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 12px 16px;
+    z-index: 1001;
+    right: 0;
+    border-radius: 5px;
+    min-width: 200px;
+    border: 1px solid #1b8e29;
+}
+
+.dropdown.active .dropdown-content {
+    display: block;
+}
+
+.shortcut-item {
+    margin-bottom: 10px;
+    color: #fff;
+    font-size: 14px;
+}
 
 /* Responsive Design */
 @media (max-width: 1240px) {
-    .container {
-        padding: 40px 20px;
-    }
     .artists-container {
         padding: 20px 30px;
     }
@@ -324,10 +334,6 @@ header {
     
     .artists-title-bg {
         height: 15px;
-    }
-
-    .container {
-        padding: 20px 10px;
     }
 
     .artists-container {
@@ -374,12 +380,11 @@ header {
         font-size: 16px;
     }
 
-    .dropdown {
+    .home-container, .dropdown {
         top: 10px;
-        right: 10px;
     }
 
-    .dropdown button {
+    .home-button, .dropdown-button {
         padding: 8px 12px;
         font-size: 12px;
     }
