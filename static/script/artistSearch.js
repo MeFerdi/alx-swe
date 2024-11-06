@@ -34,18 +34,21 @@ searchInput.addEventListener('input', function() {
                             div.textContent = `${item.name} - ${item.type} - ${item.bandName}`;
                         } else if (item.type === 'location') {
                             div.textContent = `${item.name} - ${item.type} - ${item.bandName}`;
-                        } else if (item.type === 'dates') {
+                        }else if (item.type === 'firstAlbum dates') {
+                            div.textContent = `${item.name} - ${item.type} - ${item.band}`;
+                        }else if (item.type === 'Creation dates') {
                             div.textContent = `${item.name} - ${item.type} - ${item.band}`;
                         }
-
                         // Redirect on click
                         div.addEventListener('click', () => {
                             if (item.id) {
                                 if (item.type === 'location') {
                                     window.location.href = `/artist/${item.id}?section=locations`;
-                                } else if (item.type === 'dates') {
+                                }else if (item.type === 'firstAlbumdates') {
                                     window.location.href = `/artist/${item.id}?section=dates`;
-                                } else {
+                                 } else if (item.type === 'Creationdates') {
+                                    window.location.href = `/artist/${item.id}?section=dates`;
+                                 }else {
                                     window.location.href = `/artist/${item.id}`;
                                 }
                             } else {

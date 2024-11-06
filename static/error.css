@@ -20,6 +20,38 @@ body {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     text-align: center;
 }
+.info-link a {
+    color: green;
+    text-decoration: none;
+}
+
+.info-link a:hover {
+    text-decoration: underline;
+}
+/* Home Button Styles */
+.home-container {
+    position: fixed; /* Fixed position on the page */
+    top: 20px; /* Top spacing */
+    left: 20px; /* Left spacing */
+    z-index: 1000; /* Above other elements */
+ }
+ 
+ .home-button {
+    background-color: #1b8e29; /* Same as dropdown buttons */
+    color: #fff; /* White text color */
+    border: none; /* No border */
+    padding: 12px 20px; /* Same padding as dropdown buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+    border-radius: 25px; /* Rounded corners */
+    font-size: 14px; /* Font size */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Transition effects */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow effect */
+ }
+ 
+ .home-button:hover {
+    background-color: #156f20; /* Darker shade on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+ }
 .error-code {
     font-size: 72px;
     color: #28a118;
@@ -131,6 +163,53 @@ h1 {
     justify-content: center;
     margin-top: 20px;
 }
+
+.dropdown {
+    position: fixed; 
+    top: 20px; 
+    right: 20px; 
+    z-index: 1000; 
+ }
+ 
+ .dropdown button {
+    background-color: #1b8e29; 
+    color:#fff; 
+    border:none; 
+    padding :12px ; 
+    cursor:pointer ; 
+    border-radius :25px ; 
+    font-size :14px ; 
+    transition :background-color .3s ease , box-shadow .3s ease ;
+    box-shadow :0 px ,2 px ,5 px ,rgba(0 ,0 ,0 ,0.2) ;
+ }
+ 
+ .dropdown button:hover {
+    background-color :#156f20 ;
+    box-shadow :0 px ,4 px ,8 px ,rgba(0 ,0 ,0 ,0.3) ;
+ }
+ 
+ .dropdown-content {
+    display:none ; 
+    position:absolute ; 
+    background-color :rgba(46 ,46 ,46 ,0.95) ; 
+    box-shadow :0 px ,8 px ,16 px ,rgba(0 ,0 ,0 ,0.2) ; 
+    padding :12 px ,16 px ; 
+    z-index :1001 ; 
+    right :0 ; 
+    border-radius :5 px ; 
+    min-width :200 px ; 
+    border :1 px solid #1b8e29 ;
+ }
+ 
+ .dropdown:hover .dropdown-content {
+  display:block ;
+ }
+ 
+ .shortcut-item {
+  margin-bottom :10 px ;
+  color:#fff ;
+  font-size :14 px ;
+ }
 
 /* Media queries for responsiveness */
 @media (max-width: 768px) {

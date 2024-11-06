@@ -1,5 +1,5 @@
 # GROUPIE TRACKER SEARCH-BAR
-![](https://webcasa.com/wp-content/uploads/2024/02/how-to-choose-the-best-web-designing-company-for-your-business.png)
+![](static/images/search-searching-internet-finding-seeking-quest-concept(1).jpg)
 Groupie-Tracker-Search-Bar consists of creating a functional program that searches, inside your website, for a specific text input.
 
 ## Features
