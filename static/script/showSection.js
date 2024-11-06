@@ -1,21 +1,25 @@
 function showSection(sectionId, updateUrl = true) {
     const sections = document.querySelectorAll('section');
     sections.forEach(section => {
-        if (section.id === sectionId || sectionId === 'all') {
+        if (section.id === sectionId) {
             section.classList.remove('hidden');
         } else {
             section.classList.add('hidden');
         }
     });
 
+    if (sectionId === 'all') {
+        sections.forEach(section => {
+            section.classList.remove('hidden');
+        });
+    }
+
     if (updateUrl) {
-        // Update URL without adding to browser history
         const url = new URL(window.location);
         url.searchParams.set('section', sectionId);
         window.history.replaceState({}, '', url);
     }
 
-    // Smooth scroll to the section
     if (sectionId !== 'all') {
         const targetSection = document.getElementById(sectionId);
         if (targetSection) {
@@ -30,44 +34,63 @@ function handleUrlParams() {
     showSection(section, false);
 }
 
-// Call handleUrlParams on page load
-handleUrlParams();
+document.addEventListener('DOMContentLoaded', function() {
+    // Hide all sections by default
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        section.classList.add('hidden');
+    });
 
-// Listen for popstate events (browser back/forward)
-window.addEventListener('popstate', handleUrlParams);
+    handleUrlParams();
 
-// Update event listeners
-document.addEventListener('keydown', function(event) {
-    if (event.altKey) {
-        event.preventDefault(); // Prevent default browser behavior for Alt key combinations
-        switch (event.key.toLowerCase()) {
-            case 'arrowleft':
-                history.back();
-                break;
-            case 'arrowright':
-                history.forward();
-                break;
-            case 'l':
-                showSection('locations');
-                break;
-            case 'd':
-                showSection('dates');
-                break;
-            case 'r':
-                showSection('relations');
-                break;
-            case 'a':
-                showSection('all');
-                break;
+    window.addEventListener('popstate', handleUrlParams);
+
+    document.addEventListener('keydown', function(event) {
+        if (event.altKey) {
+            event.preventDefault();
+            switch (event.key.toLowerCase()) {
+                case 'arrowleft':
+                    history.back();
+                    break;
+                case 'arrowright':
+                    history.forward();
+                    break;
+                case 'l':
+                    showSection('locations');
+                    break;
+                case 'd':
+                    showSection('dates');
+                    break;
+                case 'r':
+                    showSection('relations');
+                    break;
+                case 'a':
+                    showSection('all');
+                    break;
+            }
         }
-    }
+    });
+
+    document.querySelectorAll('.links a').forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            const section = this.getAttribute('href').split('=')[1];
+            showSection(section);
+        });
+    });
 });
 
-// Prevent default anchor behavior and use showSection instead
-document.querySelectorAll('.links a').forEach(link => {
-    link.addEventListener('click', function(event) {
-        event.preventDefault();
-        const section = this.getAttribute('href').split('=')[1];
-        showSection(section);
-    });
+function goHome() {
+    window.location.href = '/';
+}
+
+document.querySelector('.dropdown-button').addEventListener('click', function(e) {
+    e.preventDefault();
+    this.parentNode.classList.toggle('active');
+});
+
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.dropdown')) {
+        document.querySelector('.dropdown').classList.remove('active');
+    }
 });

@@ -1,6 +1,3 @@
-function goHome() {
-    window.location.href = '/'; // Redirect to the home page
-}
 
 const searchInput = document.getElementById('search-input');
 const searchResults = document.getElementById('search-results');

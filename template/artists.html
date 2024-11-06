@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="home-container">
-        <button class="home-button" onclick="goHome()">Home</button>
+        <button class="home-button" onclick= "window.location.href = '/'">Home</button>
     </div>
    <header>
     <h1 class="artists-title">Artists</h1>
@@ -40,18 +40,18 @@
     </main>
 
     <div class="dropdown">
-        <button>Shortcuts</button>
+        <button class="dropdown-button">Shortcuts</button>
         <div class="dropdown-content">
             <div class="shortcut-item">Alt + ← : Go Back</div>
             <div class="shortcut-item">Alt + → : Go Forward</div>
+            <div class="shortcut-item">Alt + L : View Locations</div>
+            <div class="shortcut-item">Alt + D : View Dates</div>
+            <div class="shortcut-item">Alt + R : View Relations</div>
         </div>
     </div>
    
    <script src="/static/script/artistSearch.js"></script>
-   <script>
-    function goHome() {
-        window.location.href = '/'; // Redirect to the home page
-    }
-    </script>
+   <script src="/static/script/showSection.js"></script>
+
 </body>
 </html>
