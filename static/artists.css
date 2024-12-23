@@ -5,8 +5,15 @@
     font-style: normal;
 }
 
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+}
+
 body {
-    background-image: url(/static/images/artist2.jpeg);
+    background-color: #1e1e1e;
+    background-image: url(/static/images/a12.jpg);
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -15,6 +22,7 @@ body {
     padding: 0;
     min-height: 100vh;
     font-family: Arial, sans-serif;
+    overflow-x: hidden;
 }
 
 body::before {
@@ -37,6 +45,7 @@ header {
     text-align: center;
     margin-bottom: 40px;
 }
+
 
 .artists-title {
     font-family: 'Rockville Solid Regular', Arial, sans-serif;
@@ -88,9 +97,12 @@ header {
 /* Search Styles */
 #search-container {
     position: relative;
-    max-width: 400px;
+    max-width: 90%;
+    width: 400px;
     margin: 30px auto;
     z-index: 1000;
+    padding: 0 15px;
+    box-sizing: border-box;
 }
 
 #search-input {
@@ -102,6 +114,7 @@ header {
     background-color: rgba(46, 46, 46, 0.8);
     color: #fff;
     transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
 #search-input::placeholder {
@@ -122,7 +135,6 @@ header {
     max-height: 300px;
     overflow-y: auto;
     background-color: rgba(46, 46, 46, 0.95);
-
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
@@ -140,12 +152,40 @@ header {
     background-color: #1b8e29;
 }
 
+/* Responsive adjustments for search */
+@media (max-width: 480px) {
+    #search-container {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+
+    #search-input {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+}
+
 /* Artists Container */
 .artists-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 30px;
-    padding: 20px 40px;
+    padding: 20px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .artists-container {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .artists-container {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        padding: 10px;
+    }
 }
 
 .artist-card {
@@ -153,7 +193,7 @@ header {
     border-radius: 10px;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px #1b8e29;
     position: relative;
     max-width: 250px;
     margin: 0 auto;
@@ -161,7 +201,7 @@ header {
 
 .artist-card:hover {
     transform: translateY(-5px) scale(1.05);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 20px rgba(99, 96, 96, 0.2);
 }
 
 .artist-image {
@@ -188,6 +228,11 @@ header {
     z-index: 1;
 }
 
+.artist-card a {
+    text-decoration: none;
+    color: inherit;
+}
+
 .artist-info h2 {
     margin: 0;
     font-size: 20px;
@@ -212,15 +257,22 @@ header {
     }
 }
 
-/* Dropdown Styles */
-.dropdown {
+/* Button Styles */
+.home-container, .dropdown {
     position: fixed;
     top: 20px;
-    right: 20px;
     z-index: 1000;
 }
 
-.dropdown button {
+.home-container {
+    left: 20px;
+}
+
+.dropdown {
+    right: 20px;
+}
+
+.home-button, .dropdown-button {
     background-color: #1b8e29;
     color: #fff;
     border: none;
@@ -232,7 +284,7 @@ header {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.dropdown button:hover {
+.home-button:hover, .dropdown-button:hover {
     background-color: #156f20;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
@@ -250,7 +302,7 @@ header {
     border: 1px solid #1b8e29;
 }
 
-.dropdown:hover .dropdown-content {
+.dropdown.active .dropdown-content {
     display: block;
 }
 
@@ -262,9 +314,6 @@ header {
 
 /* Responsive Design */
 @media (max-width: 1240px) {
-    .container {
-        padding: 40px 20px;
-    }
     .artists-container {
         padding: 20px 30px;
     }
@@ -285,10 +334,6 @@ header {
     
     .artists-title-bg {
         height: 15px;
-    }
-
-    .container {
-        padding: 20px 10px;
     }
 
     .artists-container {
@@ -335,12 +380,11 @@ header {
         font-size: 16px;
     }
 
-    .dropdown {
+    .home-container, .dropdown {
         top: 10px;
-        right: 10px;
     }
 
-    .dropdown button {
+    .home-button, .dropdown-button {
         padding: 8px 12px;
         font-size: 12px;
     }

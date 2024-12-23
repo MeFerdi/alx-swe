@@ -179,7 +179,7 @@ func searchArtists(artists []Artist, locations []Location, query string) []map[s
 			results = append(results, map[string]string{
 				"name": artist.FirstAlbum,
 				"band": artist.Name, // Include artist name with album date
-				"type": "dates",
+				"type": "first album dates",
 				"id":   strconv.Itoa(artist.ID),
 			})
 		}
@@ -188,20 +188,10 @@ func searchArtists(artists []Artist, locations []Location, query string) []map[s
 			results = append(results, map[string]string{
 				"name": strconv.Itoa(artist.CreationDate),
 				"band": artist.Name, // Include artist name with creation date
-				"type": "dates",
+				"type": "creation dates",
 				"id":   strconv.Itoa(artist.ID),
 			})
 		}
-		// Search for Concert Dates
-		if strings.Contains(strings.ToLower(artist.ConcertDates), query) {
-			results = append(results, map[string]string{
-				"name": artist.ConcertDates,
-				"band": artist.Name, // Include artist name with concert date
-				"type": "dates",
-				"id":   strconv.Itoa(artist.ID),
-			})
-		}
-
 		// Search members
 		for _, member := range artist.Members {
 			if strings.Contains(strings.ToLower(member), query) {

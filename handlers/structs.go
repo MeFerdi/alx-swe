@@ -21,7 +21,7 @@ type Artist struct {
 }
 
 type Artistlocation struct {
-	Artist    Artist  // Contains artist information
+	Artist    Artist   // Contains artist information
 	Locations Location // Contains location information associated with the artist
 }
 
