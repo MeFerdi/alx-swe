@@ -9,7 +9,7 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 // Clone the repository from GitHub
-                git 'https://github.com/yourusername/groupie-tracker.git' // Replace with your repo URL
+                git 'https://github.com/MeFerdi/alx-swe.git' // Replace with your repo URL
             }
         }
 
